@@ -13,7 +13,7 @@ class TransfertController extends Controller
 {
     public static function getTransfertOnline(): array
     {
-        info("Recupération des transferts en ligne");
+        info("\n\n\nRecupération des transferts en ligne");
 
         $setting = SettingController::getSetting('appOnlineURL');
         if ($setting != null) {
