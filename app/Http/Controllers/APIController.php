@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class APIController extends Controller
 {
-    public function send($url)
+    public static function send($url)
     {
         return Http::get($url);
     }
