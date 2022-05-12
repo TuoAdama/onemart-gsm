@@ -11,4 +11,14 @@ class SettingController extends Controller
     {
        return Setting::where('key',$key)->first();
     }
+
+    public static function transfertSyntaxeURL()
+    {
+        return self::getSetting("syntaxeTransfertURL")->value;
+    }
+
+    public static function gsmURL()
+    {
+        return self::getSetting('gsmURL')->value;
+    }
 }

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\GSMController;
 use App\Http\Controllers\TransfertController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/store', [TransfertController::class, 'store']);
+Route::get('/make', [TransfertController::class, 'make']);
+
+Route::get('/', function ()
+{
+    $url = GSMController::gsmURL().urlencode('*414*41253#');
+    dd(file_get_contents($url));
+    dd($url);
+});

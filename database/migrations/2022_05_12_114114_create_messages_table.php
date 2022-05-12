@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transfert_id')->constrained();
-            $table->string('reference');
+            $table->string('reference')->nullable();
             $table->text('sms')->nullable();
             $table->timestamps();
         });
