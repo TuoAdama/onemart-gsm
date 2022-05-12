@@ -46,7 +46,7 @@ class TransfertController extends Controller
         }
     }
 
-    public function make()
+    public static function make()
     {
         $etat_ids = Etat::whereIn('libelle', ['EN COURS', 'ECHOUE'])->get()
             ->pluck('id')->toArray();

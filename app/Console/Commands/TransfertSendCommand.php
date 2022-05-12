@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\TransfertController;
 use Illuminate\Console\Command;
 
 class TransfertSendCommand extends Command
@@ -27,8 +28,7 @@ class TransfertSendCommand extends Command
      */
     public function handle()
     {
-        info("Send transfert");
-        sleep(3);
+        TransfertController::make();
         return 0;
     }
 }
