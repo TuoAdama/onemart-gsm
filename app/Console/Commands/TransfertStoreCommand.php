@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\TransfertController;
 use Illuminate\Console\Command;
 
 class TransfertStoreCommand extends Command
@@ -27,7 +28,7 @@ class TransfertStoreCommand extends Command
      */
     public function handle()
     {
-        info("Store transfert");
+        TransfertController::store();
         return 0;
     }
 }

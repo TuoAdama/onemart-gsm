@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('transfert:store')->everyMinute()->runInBackground();
-        $schedule->command('transfert:send')->everyMinute();
+        $schedule->command('transfert:send')->everyMinute()->runInBackground();
     }
 
     /**
