@@ -21,4 +21,15 @@ class SettingController extends Controller
     {
         return self::getSetting('gsmURL')->value;
     }
+
+    public function update(Request $request)
+    {
+        $setting = Setting::where('key', $request->get('key'))->first();
+        if($setting != null){
+            $setting->value = $request->get('value');
+            $setting->save();
+            return redirect()->back()->with('success', 'Modification effectuée');
+        }
+        abort(404);
+    }
 }
