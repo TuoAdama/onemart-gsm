@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\APIController;
 use App\Http\Controllers\GSMController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TransfertController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/store', [TransfertController::class, 'store']);
 Route::get('/make', [TransfertController::class, 'make']);
+Route::get('/', function(){
+    $res = APIController::sendByFileContent(SettingController::transfertSyntaxeURL());
+    dd($res);
+});

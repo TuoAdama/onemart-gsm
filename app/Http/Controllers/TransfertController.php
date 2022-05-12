@@ -13,10 +13,12 @@ class TransfertController extends Controller
 {
     public static function getTransfertOnline(): array
     {
-        info("\n\n\nRecupération des transferts en ligne");
-
+        info("\n\n\nRécuperation des transferts en ligne [Recuperation]");
+        
         $setting = SettingController::getSetting('appOnlineURL');
+        
         if ($setting != null) {
+            info("URL=".$setting->value);
             $response = APIController::send($setting->value);
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);

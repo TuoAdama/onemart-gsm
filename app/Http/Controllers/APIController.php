@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use ErrorException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
@@ -21,6 +22,10 @@ class APIController extends Controller
 
     public static function sendByFileContent($url)
     {
-        return file_get_contents($url);
+        try {
+            return file_get_contents($url, false, stream_context_create(["http"=>["timeout"=>10]]));
+        } catch (ErrorException $th) {
+            return null;   
+        }
     }
 }

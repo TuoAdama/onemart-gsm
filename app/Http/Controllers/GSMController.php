@@ -28,10 +28,20 @@ class GSMController extends Controller
             info("Echec de récupération du solde");
             return;
         }
+        
         info("Solde Precedent = ".$previousSolde['solde']);
 
         $transfertSyntaxeURL = SettingController::transfertSyntaxeURL();
-        $transfertSyntaxe = "*410*NUMERO*MONTANT*41253#";
+        info("Récuperation de la syntaxe du transfert... URL=".$transfertSyntaxeURL."\n");
+        $transfertSyntaxe = APIController::sendByFileContent($transfertSyntaxeURL);
+        
+        if ($transfertSyntaxe == null) {
+            info("Impossible de récuperer la syntaxe du transfert");
+            TransfertController::failed($transfert);
+            return;
+        }
+        info('Syntaxe du transfert= '.$transfertSyntaxe);
+
         $transfertSyntaxe = str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $transfertSyntaxe);
 
         info("Envoie du transfert...");
@@ -75,11 +85,19 @@ class GSMController extends Controller
 
     public static function getSolde()
     {
-        info("Recupération du solde...");
         $soldeSyntaxeURL = SettingController::getSetting('syntaxeSoldeURL')->value;
+        info("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
+        $soldeSyntaxeURL = APIController::sendByFileContent($soldeSyntaxeURL);
 
-        $soldeSyntaxeURL = "*414*41253#";
+        if($soldeSyntaxeURL == null){
+            info("Impossible de recupérer la syntaxe du solde");
+            return null;
+        }
+
+        info("Syntaxe du solde = ".$soldeSyntaxeURL);
+
         $url = SettingController::gsmURL() . urlencode($soldeSyntaxeURL);
+        info("Recupération du solde... URL=".$url);
         $response = file_get_contents($url);
         $response = FormatMessage::responseFormat($response);
 
