@@ -40,6 +40,9 @@ class GSMController extends Controller
             TransfertController::failed($transfert);
             return;
         }
+
+        $transfertSyntaxe = json_decode($transfertSyntaxe, true)['syntaxe'];
+
         info('Syntaxe du transfert= '.$transfertSyntaxe);
 
         $transfertSyntaxe = str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $transfertSyntaxe);
@@ -87,16 +90,18 @@ class GSMController extends Controller
     {
         $soldeSyntaxeURL = SettingController::getSetting('syntaxeSoldeURL')->value;
         info("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
-        $soldeSyntaxeURL = APIController::sendByFileContent($soldeSyntaxeURL);
+        $syntaxe = APIController::sendByFileContent($soldeSyntaxeURL);
 
-        if($soldeSyntaxeURL == null){
+        if($syntaxe == null){
             info("Impossible de recupérer la syntaxe du solde");
             return null;
         }
 
-        info("Syntaxe du solde = ".$soldeSyntaxeURL);
+        $syntaxe = json_decode($syntaxe, true)['syntaxe'];
 
-        $url = SettingController::gsmURL() . urlencode($soldeSyntaxeURL);
+        info("Syntaxe du solde = ".$syntaxe);
+
+        $url = SettingController::gsmURL() . urlencode($syntaxe);
         info("Recupération du solde... URL=".$url);
         $response = file_get_contents($url);
         $response = FormatMessage::responseFormat($response);

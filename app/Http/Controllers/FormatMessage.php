@@ -8,13 +8,12 @@ class FormatMessage extends Controller
 {
     public static function soldeMessage($message)
     {
-        $message = preg_replace("/[^0-9]+/", "&", $message);
-        $message = explode('&', $message);
-        $message = array_values(array_filter($message, function($m){
-            return trim($m) != '';
-        }));
+        $tab = explode('Fcfa', $message);
 
-        return array_combine(['solde','bonus'], [$message[0], $message[1]]);
+        $solde = self::getMontant("Votre Solde EVD est ", $tab[0]);
+        $bonus = self::getMontant("et vous avez un bonus de ", $tab[1]);
+
+        return array_combine(['solde','bonus'], [$solde, $bonus]);
     }
 
     public static function responseFormat($message)
@@ -32,5 +31,12 @@ class FormatMessage extends Controller
             'Response' => $result,
             'Message' => $message,
         ];
+    }
+
+    public static function getMontant($separator, $tab)
+    {
+        $montant = trim(explode($separator, $tab)[1]);
+        $montant = str_replace(' ','',$montant);
+        return $montant;
     }
 }

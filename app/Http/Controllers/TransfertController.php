@@ -36,7 +36,7 @@ class TransfertController extends Controller
             $res = Transfert::find($transfert['id']);
             if ($res == null) {
 
-                info("[Transfert: id=" . $transfert['id'] . ", numero=" . $transfert['id'] . ", montant=" . $transfert['montant'] . "]");
+                info("[Transfert: id=" . $transfert['id'] . ", numero=" . $transfert['numero'] . ", montant=" . $transfert['montant'] . "]");
 
                 Transfert::create([
                     'id' => $transfert['id'],

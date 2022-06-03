@@ -23,3 +23,7 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/configuration', [HomeController::class, 'configuration'])->name('configuration');
 
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
+
+Route::get('/test', function(){
+    dd(GSMController::getSolde());
+});
