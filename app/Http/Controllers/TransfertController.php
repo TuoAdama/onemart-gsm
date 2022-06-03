@@ -14,11 +14,11 @@ class TransfertController extends Controller
     public static function getTransfertOnline(): array
     {
         info("\n\n\nRécuperation des transferts en ligne [Recuperation]");
-        
+
         $setting = SettingController::getSetting('appOnlineURL');
-        
+
         if ($setting != null) {
-            info("URL=".$setting->value);
+            info("URL=" . $setting->value);
             $response = APIController::send($setting->value);
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);
@@ -68,11 +68,21 @@ class TransfertController extends Controller
         $transfert->etat_id = EtatController::execute()->id;
         $transfert->save();
 
-        if($message != null){
+        $reference = null;
+
+        if ($message != null) {
             Message::create([
                 'transfert_id' => $transfert->id,
                 'sms' => $message
             ]);
+
+            $reference = FormatMessage::getReference($message);
         }
+
+        $transfert->transfert_id = $transfert->id;
+        $transfert->reference = $reference;
+        $transfert->sms = $message;
+
+        APIController::post(SettingController::smsStorage(), $transfert->toArray());
     }
 }

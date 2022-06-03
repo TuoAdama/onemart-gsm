@@ -20,6 +20,11 @@ class APIController extends Controller
         }
     }
 
+    public static function post($url, $body)
+    {
+        return Http::post($url, $body);
+    }
+
     public static function sendByFileContent($url)
     {
         try {

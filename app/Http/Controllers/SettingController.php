@@ -22,6 +22,11 @@ class SettingController extends Controller
         return self::getSetting('gsmURL')->value;
     }
 
+    public static function smsStorage()
+    {
+        return self::getSetting("smsStorage")->value;
+    }
+
     public function update(Request $request)
     {
         $setting = Setting::where('key', $request->get('key'))->first();
