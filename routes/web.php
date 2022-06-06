@@ -27,18 +27,5 @@ Route::get('/configuration', [HomeController::class, 'configuration'])->name('co
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 
 Route::get('/test', function () {
-
-    $message = "Vous avez transfere 50 Fcfa de credit vers le numero 0150388646. Votre solde actuel est 5 250 Fcfa.Ref 02285979804";
-    $reference = FormatMessage::getReference($message);
-    $transfert = Transfert::find(15);
-    
-    $transfert->transfert_id = $transfert->id;
-    $transfert->reference = $reference;
-    $transfert->sms = $message;
-
-    $response = APIController::post(SettingController::smsStorage(), $transfert->toArray());
-
-    dd($response);
-
-    return $transfert->toArray();
+    abort(404);
 });
