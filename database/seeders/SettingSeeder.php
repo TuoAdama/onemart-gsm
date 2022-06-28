@@ -23,6 +23,10 @@ class SettingSeeder extends Seeder
             'display' => 'SMS STORAGE',
             'value' => 'http://localhost:8000/api/AddTransfertAndroid'
         ],
+        'soldeURL' => [
+            'display' => 'STORAGE SOLDE',
+            'value' => 'http://localhost:8000/api/solde/store'
+        ],
         'appOnlineURL' => [
             'display' => 'APP ONLINE URL',
             'value' => 'https://www.onemart.tel/api/gsmlist'

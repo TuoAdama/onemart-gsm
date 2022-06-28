@@ -25,6 +25,8 @@ class APIController extends Controller
 
     public static function post($url, $body)
     {
+        info("POST: url=".$url."\n\n");
+
         return Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => env('TOKEN')
