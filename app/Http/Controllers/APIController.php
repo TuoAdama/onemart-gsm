@@ -12,10 +12,7 @@ class APIController extends Controller
     public static function send($url)
     {
         try {
-            return Http::withHeaders([
-                'Accept' => 'application/json',
-                'Authorization' => env('TOKEN')
-            ])->get($url);
+            return Http::withHeaders(self::getHeader())->get($url);
         } catch (ConnectionException $th) {
             return null;
         } catch (RequestException $th) {
@@ -27,10 +24,7 @@ class APIController extends Controller
     {
         info("POST: url=".$url."\n\n");
 
-        return Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => env('TOKEN')
-        ])->post($url, $body);
+        return Http::withHeaders(self::getHeader())->post($url, $body);
     }
 
     public static function sendByFileContent($url)
@@ -40,5 +34,13 @@ class APIController extends Controller
         } catch (ErrorException $th) {
             return null;
         }
+    }
+
+    public static function getHeader()
+    {
+        return [
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer ".env('TOKEN'),
+        ];
     }
 }
