@@ -12,7 +12,7 @@ class GSMController extends Controller
 {
 
     const INSUFFICIENT_MESSAGE = "Insufficient funds";
-    const REPEAT_MESSAGE = "souhaitez-vous continuer @@ cette vente";
+    const REPEAT_MESSAGE = "souhaitez-vous continuer";
     const SUCCESS = "Success";
     const RESPONSE = "Response";
 
