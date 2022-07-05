@@ -42,9 +42,14 @@ class SettingController extends Controller
         return self::url(self::getSetting('appOnlineURL'));
     }
 
-    public static function soldeURL()
+    public static function syntaxeSoldeURL()
     {
         return self::url(self::getSetting('syntaxeSoldeURL'));
+    }
+
+    public static function sendSoldeURL()
+    {
+        return self::url(self::getSetting('soldeURL'));
     }
 
     public function update(Request $request)

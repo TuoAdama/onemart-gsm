@@ -91,7 +91,7 @@ class GSMController extends Controller
 
     public static function getSolde()
     {
-        $soldeSyntaxeURL = SettingController::soldeURL();
+        $soldeSyntaxeURL = SettingController::syntaxeSoldeURL();
         info("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
         $syntaxe = APIController::send($soldeSyntaxeURL);
         if($syntaxe == null){
