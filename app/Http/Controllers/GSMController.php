@@ -56,7 +56,11 @@ class GSMController extends Controller
         
         $response = FormatMessage::responseFormat($message);
         info("Reponse=".$response[self::RESPONSE].", Message=".$response['Message']);
-
+        
+        if (str_contains($response['Message'], self::REPEAT_MESSAGE)) {
+            $res = APIController::sendByFileContent(SettingController::gsmURL() . "1");
+            $response = FormatMessage::responseFormat($res);
+        }
         $currentSolde = self::getSolde();
         info("Solde Actuel = ".$currentSolde['solde']);
 

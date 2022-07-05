@@ -38,7 +38,6 @@ class APIController extends Controller
 
     public static function getHeader()
     {
-        info("CODE: ".SettingController::getAuthenficationCode());
         return [
             'Accept' => 'application/json',
             'code' => SettingController::getAuthenficationCode(),

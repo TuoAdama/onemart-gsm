@@ -82,7 +82,7 @@ class TransfertController extends Controller
         $transfert->transfert_id = $transfert->id;
         $transfert->reference = $reference;
         $transfert->sms = $message;
-
+        info("Envoie du transfert en ligne...");
         APIController::post(SettingController::smsStorage(), $transfert->toArray());
     }
 }

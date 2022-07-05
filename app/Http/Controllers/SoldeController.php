@@ -11,6 +11,7 @@ class SoldeController extends Controller
     {
         $solde = Solde::create($solde);
         $soldeUrl = SettingController::soldeURL();
+        info("Transmission du solde...");
         APIController::post($soldeUrl, $solde->toArray());
     }
 }
