@@ -94,13 +94,17 @@ class GSMController extends Controller
         $soldeSyntaxeURL = SettingController::soldeURL();
         info("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
         $syntaxe = APIController::send($soldeSyntaxeURL);
-
         if($syntaxe == null){
             info("Impossible de recupérer la syntaxe du solde");
             return null;
         }
-
-        $syntaxe = json_decode($syntaxe, true)['syntaxe'];
+        
+        $syntaxeArray = json_decode($syntaxe, true);
+        if(array_key_exists('error', $syntaxeArray)){
+            info("Code de recupération invalide");
+            return null;
+        }
+        $syntaxe = $syntaxeArray['syntaxe'];
 
         info("Syntaxe du solde = ".$syntaxe);
 
