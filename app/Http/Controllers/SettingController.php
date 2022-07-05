@@ -7,24 +7,44 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
+    public static function getHost()
+    {
+        return self::getSetting('host');
+    }
+
     public static function getSetting(String $key)
     {
-       return Setting::where('key',$key)->first();
+       return Setting::where('key',$key)->first()->value;
     }
 
     public static function transfertSyntaxeURL()
     {
-        return self::getSetting("syntaxeTransfertURL")->value;
+        return self::url(self::getSetting("syntaxeTransfertURL"));
     }
 
     public static function gsmURL()
     {
-        return self::getSetting('gsmURL')->value;
+        return self::getSetting('gsmURL');
     }
 
     public static function smsStorage()
     {
-        return self::getSetting("smsStorage")->value;
+        return self::url(self::getSetting("smsStorage"));
+    }
+
+    public static function getAuthenficationCode()
+    {
+        return self::getSetting('authentificationAPI');
+    }
+
+    public static function appOnlineURL()
+    {
+        return self::url(self::getSetting('appOnlineURL'));
+    }
+
+    public static function soldeURL()
+    {
+        return self::url(self::getSetting('syntaxeSoldeURL'));
     }
 
     public function update(Request $request)
@@ -36,5 +56,10 @@ class SettingController extends Controller
             return redirect()->back()->with('success', 'Modification effectuée');
         }
         abort(404);
+    }
+
+    public static function url($path)
+    {
+        return self::getHost().$path;   
     }
 }

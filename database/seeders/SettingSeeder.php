@@ -15,29 +15,33 @@ class SettingSeeder extends Seeder
      */
 
     public $settings = [
+        'host' => [
+            'display' => "APPLI Distante",
+            'value' => 'http://localhost:8000',
+        ],
         'gsmURL' => [
             'display' => 'GSM URL',
             'value' => 'http://192.168.5.150/cgi/WebCGI?1500102=account=apiuser&password=apipass&port=1&content='
         ],
         'smsStorage' => [
             'display' => 'SMS STORAGE',
-            'value' => 'http://localhost:8000/api/AddTransfertAndroid'
+            'value' => '/api/AddTransfertAndroid'
         ],
         'soldeURL' => [
             'display' => 'STORAGE SOLDE',
-            'value' => 'http://localhost:8000/api/solde/store'
+            'value' => '/api/solde/store'
         ],
         'appOnlineURL' => [
             'display' => 'APP ONLINE URL',
-            'value' => 'https://www.onemart.tel/api/gsmlist'
+            'value' => '/api/gsmlist'
         ],
         'syntaxeSoldeURL' => [
             'display' => 'Get syntaxe URL',
-            'value' => 'http://localhost:8000/api/soldeSyntaxe'
+            'value' => '/api/soldeSyntaxe'
         ],
         'syntaxeTransfertURL' => [
             'display' => 'Transfert syntaxe URL',
-            'value' => 'http://localhost:8000/api/transfertCabineSyntaxe'
+            'value' => '/api/transfertCabineSyntaxe'
         ],
         'executionTimeMakeTransfert' => [
             'display' => 'Make transfert time execution',
@@ -47,6 +51,10 @@ class SettingSeeder extends Seeder
             'display' => 'Get transfert time execution',
             'value' => '10000'
         ],
+        'authentificationAPI' => [
+            'display' => "Code d'authenfication API",
+            'value' => 12345,
+        ]
     ];
 
     public function run()
@@ -59,6 +67,10 @@ class SettingSeeder extends Seeder
                     'display' => $v['display'],
                     'value' => $v['value'],
                 ]);
+            }else{
+                $set->value = $v['value'];
+                $set->display = $v['display'];
+                $set->save();
             }
         }
     }

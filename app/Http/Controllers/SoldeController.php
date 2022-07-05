@@ -10,7 +10,7 @@ class SoldeController extends Controller
     public static function soldeIsChange($solde)
     {
         $solde = Solde::create($solde);
-        $soldeUrl = SettingController::getSetting('soldeURL')->value;
+        $soldeUrl = SettingController::soldeURL();
         APIController::post($soldeUrl, $solde->toArray());
     }
 }

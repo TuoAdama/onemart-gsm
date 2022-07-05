@@ -15,11 +15,11 @@ class TransfertController extends Controller
     {
         info("\n\n\nRécuperation des transferts en ligne [Recuperation]");
 
-        $setting = SettingController::getSetting('appOnlineURL');
+        $setting = SettingController::appOnlineURL();
 
         if ($setting != null) {
-            info("URL=" . $setting->value);
-            $response = APIController::send($setting->value);
+            info("URL=" . $setting);
+            $response = APIController::send($setting);
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);
             }

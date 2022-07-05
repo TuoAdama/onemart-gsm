@@ -18,6 +18,8 @@ class GSMController extends Controller
 
     public static function make(Transfert $transfert)
     {
+        info("----------------------------------------------------------------");
+        
         info("\n\nExecution du transfert: [id=".$transfert->id.", status="
         .$transfert->etat->libelle.", numero=".$transfert->numero.", montant=".$transfert->montant."]");
 
@@ -33,7 +35,7 @@ class GSMController extends Controller
 
         $transfertSyntaxeURL = SettingController::transfertSyntaxeURL();
         info("Récuperation de la syntaxe du transfert... URL=".$transfertSyntaxeURL."\n");
-        $transfertSyntaxe = APIController::sendByFileContent($transfertSyntaxeURL);
+        $transfertSyntaxe = APIController::send($transfertSyntaxeURL);
         
         if ($transfertSyntaxe == null) {
             info("Impossible de récuperer la syntaxe du transfert");
@@ -48,18 +50,15 @@ class GSMController extends Controller
         $transfertSyntaxe = str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $transfertSyntaxe);
 
         info("Envoie du transfert...");
-        $message = APIController::sendByFileContent(SettingController::gsmURL() . urlencode($transfertSyntaxe));
-
+        $gsmURL = SettingController::gsmURL();
+        info("url=$gsmURL".urlencode($transfertSyntaxe));
+        $message = APIController::sendByFileContent($gsmURL.urlencode($transfertSyntaxe));
+        
         $response = FormatMessage::responseFormat($message);
         info("Reponse=".$response[self::RESPONSE].", Message=".$response['Message']);
 
         $currentSolde = self::getSolde();
         info("Solde Actuel = ".$currentSolde['solde']);
-
-        if (str_contains($response['Message'], self::REPEAT_MESSAGE)) {
-            $res = APIController::sendByFileContent(SettingController::gsmURL() . "1");
-            $response = FormatMessage::responseFormat($res);
-        }
 
         if ($response[self::RESPONSE] != self::SUCCESS && $currentSolde = null) {
             TransfertController::failed($transfert);
@@ -88,9 +87,9 @@ class GSMController extends Controller
 
     public static function getSolde()
     {
-        $soldeSyntaxeURL = SettingController::getSetting('syntaxeSoldeURL')->value;
+        $soldeSyntaxeURL = SettingController::soldeURL();
         info("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
-        $syntaxe = APIController::sendByFileContent($soldeSyntaxeURL);
+        $syntaxe = APIController::send($soldeSyntaxeURL);
 
         if($syntaxe == null){
             info("Impossible de recupérer la syntaxe du solde");
@@ -102,6 +101,7 @@ class GSMController extends Controller
         info("Syntaxe du solde = ".$syntaxe);
 
         $url = SettingController::gsmURL() . urlencode($syntaxe);
+
         info("Recupération du solde... URL=".$url);
         $response = file_get_contents($url);
         $response = FormatMessage::responseFormat($response);
