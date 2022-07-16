@@ -20,6 +20,7 @@ class TransfertController extends Controller
         if ($setting != null) {
             info("URL=" . $setting);
             $response = APIController::send($setting);
+            info("Status code: ". $response->status());
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);
             }
