@@ -27,6 +27,8 @@ Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::get('/configuration', [HomeController::class, 'configuration'])->name('configuration');
+Route::get('/transferts', [HomeController::class, 'transferts'])->name('transferts');
+Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 

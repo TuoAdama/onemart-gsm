@@ -9,6 +9,8 @@
         <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
             <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                 @include('partials.sidebar-item', ['libelle' => 'Configurations', 'link' => route('configuration')])
+                @include('partials.sidebar-item', ['libelle' => 'Transferts', 'link' => route('transferts')])
+                @include('partials.sidebar-item', ['libelle' => 'Hitorique des soldes', 'link' => route('soldes')])
             </ul>
         </nav>
 
