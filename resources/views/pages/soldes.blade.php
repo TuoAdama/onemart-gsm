@@ -3,7 +3,7 @@
 @section('content')
     <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-            <h1 class="app-page-title">Transferts</h1>
+            <h1 class="app-page-title">Historique des soldes</h1>
             <div class="row">
                 <div class="col-md-12">
                     <table class="table table-striped">

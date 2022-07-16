@@ -10,7 +10,7 @@
             <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                 @include('partials.sidebar-item', ['libelle' => 'Configurations', 'link' => route('configuration')])
                 @include('partials.sidebar-item', ['libelle' => 'Transferts', 'link' => route('transferts')])
-                @include('partials.sidebar-item', ['libelle' => 'Hitorique des soldes', 'link' => route('soldes')])
+                @include('partials.sidebar-item', ['libelle' => 'Historique des soldes', 'link' => route('soldes')])
             </ul>
         </nav>
 
