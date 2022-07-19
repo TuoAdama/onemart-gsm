@@ -117,6 +117,10 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'store_transfert' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/make_transfert.log'),
+        ]
     ],
 
 ];

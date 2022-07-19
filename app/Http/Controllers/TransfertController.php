@@ -15,14 +15,14 @@ class TransfertController extends Controller
 {
     public static function getTransfertOnline(): array
     {
-        info("\n\n\nRécuperation des transferts en ligne [Recuperation]");
+        self::LogStoreTransfert("\n\n\nRécuperation des transferts en ligne [Recuperation]");
 
         $setting = SettingController::appOnlineURL();
 
         if ($setting != null) {
-            info("URL=" . $setting);
+            self::LogStoreTransfert("URL=" . $setting);
             $response = APIController::send($setting);
-            info("Status code: ". $response->status());
+            self::LogStoreTransfert("Status code: ". $response->status());
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);
             }
@@ -39,7 +39,7 @@ class TransfertController extends Controller
             $res = Transfert::find($transfert['id']);
             if ($res == null) {
 
-                info("[Transfert: id=" . $transfert['id'] . ", numero=" . $transfert['numero'] . ", montant=" . $transfert['montant'] . "]");
+                self::LogStoreTransfert("[Transfert: id=" . $transfert['id'] . ", numero=" . $transfert['numero'] . ", montant=" . $transfert['montant'] . "]");
 
                 Transfert::create([
                     'id' => $transfert['id'],
@@ -92,5 +92,11 @@ class TransfertController extends Controller
     public static function formatSyntaxe($transfert, $syntaxe)
     {
        return str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $syntaxe);
+    }
+
+
+    public static function LogStoreTransfert($message)
+    {
+        Log::channel('store_transfert')->info($message);
     }
 }
