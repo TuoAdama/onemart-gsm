@@ -68,7 +68,6 @@ class SettingSeeder extends Seeder
                     'value' => $v['value'],
                 ]);
             }else{
-                $set->value = $v['value'];
                 $set->display = $v['display'];
                 $set->save();
             }
