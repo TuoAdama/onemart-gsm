@@ -94,7 +94,6 @@ class TransfertController extends Controller
        return str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $syntaxe);
     }
 
-
     public static function LogStoreTransfert($message)
     {
         Log::channel('store_transfert')->info($message);

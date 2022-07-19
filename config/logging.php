@@ -120,6 +120,10 @@ return [
         'store_transfert' => [
             'driver' => 'single',
             'path' => storage_path('logs/store_transfert.log'),
+        ],
+        'solde_consultation' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/solde_consultation.log'),
         ]
     ],
 

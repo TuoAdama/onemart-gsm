@@ -27,16 +27,6 @@ class GSMController extends Controller
         info("\n\nExecution du transfert: [id=".$transfert->id.", status="
         .$transfert->etat->libelle.", numero=".$transfert->numero.", montant=".$transfert->montant."]");
 
-        $previousSolde = self::getSolde();
-
-        if ($previousSolde == null) {
-            TransfertController::failed($transfert);
-            info("Echec de récupération du solde");
-            return;
-        }
-        
-        info("Solde Precedent = ".$previousSolde['solde']);
-
         $transfertSyntaxeURL = SettingController::transfertSyntaxeURL();
         info("Récuperation de la syntaxe du transfert... URL=".$transfertSyntaxeURL."\n");
         $transfertSyntaxe = APIController::send($transfertSyntaxeURL);
@@ -72,74 +62,12 @@ class GSMController extends Controller
             $res = APIController::sendByFileContent(SettingController::gsmURL() . "1");
             $response = FormatMessage::responseFormat($res);
         }
-        $currentSolde = self::getSolde();
-        info("Solde Actuel = ".$currentSolde['solde']);
 
-        if ($response[self::RESPONSE] != self::SUCCESS && $currentSolde = null) {
+        $msg = $response['Message'];
+        if ($response[self::RESPONSE] == self::SUCCESS && str_contains($msg, self::TRANSFERT_SUCCESS_MESSAGE)) {
+            TransfertController::success($transfert, $msg);
+        }else {
             TransfertController::failed($transfert);
-            return;
         }
-
-        if ($response[self::RESPONSE] != self::SUCCESS && $currentSolde != null) {
-            if ($currentSolde['solde'] != $previousSolde['solde']) {
-                TransfertController::success($transfert);
-                SoldeController::soldeIsChange($currentSolde);
-                return;
-            }
-        }
-
-        if ($response[self::RESPONSE] == self::SUCCESS) {
-            $msg = $response['Message'];
-            if(str_contains($msg, self::TRANSFERT_SUCCESS_MESSAGE)){
-                TransfertController::success($transfert, $msg);
-                if($currentSolde != null){
-                    SoldeController::soldeIsChange($currentSolde);
-                }
-            }else {
-                TransfertController::failed($transfert);
-            }
-        }
-    }
-
-    public static function getSolde()
-    {
-        $soldeSyntaxeURL = SettingController::syntaxeSoldeURL();
-        info("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
-        $syntaxe = APIController::send($soldeSyntaxeURL);
-        
-        if($syntaxe == null){
-            info("Impossible de recupérer la syntaxe du solde");
-            return null;
-        }
-        
-        $status = $syntaxe->status();
-        info('Status code: '.$status);
-        if($syntaxe->status() != 200){
-            return null;
-        }
-        
-        $syntaxeArray = json_decode($syntaxe, true);
-        if(array_key_exists('error', $syntaxeArray)){
-            info("Code de recupération invalide");
-            return null;
-        }
-        $syntaxe = $syntaxeArray['syntaxe'];
-
-        info("Syntaxe du solde = ".$syntaxe);
-
-        $url = SettingController::gsmURL() . urlencode($syntaxe);
-
-        info("Recupération du solde... URL=".$url);
-        $response = APIController::sendByFileContent($url);
-        if($response == null){
-            info("Temps d'attende ecoulé");
-            return null;
-        }
-        $response = FormatMessage::responseFormat($response);
-
-        if ($response[self::RESPONSE] == self::SUCCESS) {
-            return FormatMessage::soldeMessage($response['Message']);
-        }
-        return null;
     }
 }
