@@ -13,10 +13,12 @@ class SoldeController extends Controller
 
     public static function soldeIsChange($solde)
     {
+        self::LogSoldeConsultation("Mise à jour du solde: [solde=".$solde['solde'].", bonus=".$solde['bonus']."]");
         $solde = Solde::create($solde);
         $soldeUrl = SettingController::sendSoldeURL();
         self::LogSoldeConsultation("Transmission du solde...");
-        APIController::post($soldeUrl, $solde->toArray());
+        $result = APIController::post($soldeUrl, $solde->toArray());
+        self::LogSoldeConsultation("Status code: ".$result->status());
     }
 
     public static function getSolde()
@@ -65,9 +67,21 @@ class SoldeController extends Controller
         return null;
     }
 
-    public function soldeActuel()
+    public static function soldeActuel()
     {
        $solde = self::getSolde();
+       if($solde != null){
+           self::LogSoldeConsultation($solde);
+           $s = $solde['solde'];
+           info("Solde actuel= ".$s);   
+           $dernierSolde = Solde::orderBy('id', 'desc')->first();
+           if($dernierSolde != null){
+                if($dernierSolde->solde != $s){
+                    self::LogSoldeConsultation("Ancien solde: [solde=".$dernierSolde->solde.", bonus=".$dernierSolde->bonus."]");
+                    self::soldeIsChange($solde);
+                }
+           }
+        }
     }
 
     public static function LogSoldeConsultation($message)
@@ -75,5 +89,7 @@ class SoldeController extends Controller
         Log::channel('solde_consultation')
         ->info($message);
     }
+
+
 
 }

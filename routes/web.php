@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SoldeController;
 use App\Http\Controllers\TransfertController;
+use App\Models\Solde;
 use App\Models\Transfert;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -37,5 +38,5 @@ Route::post('/settings/update', [SettingController::class, 'update'])->name('set
 
 
 Route::get('/test', function(){
-    dd(SoldeController::getSolde());
+    dd(SoldeController::soldeActuel());
 });
