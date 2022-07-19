@@ -22,13 +22,13 @@ class GSMController extends Controller
 
     public static function make(Transfert $transfert)
     {
-        info("----------------------------------------------------------------");
+        info("\n\n----------------------------------------------------------------");
         
-        info("\n\nExecution du transfert: [id=".$transfert->id.", status="
+        info("Execution du transfert: [id=".$transfert->id.", status="
         .$transfert->etat->libelle.", numero=".$transfert->numero.", montant=".$transfert->montant."]");
 
         $transfertSyntaxeURL = SettingController::transfertSyntaxeURL();
-        info("Récuperation de la syntaxe du transfert... URL=".$transfertSyntaxeURL."\n");
+        info("Récuperation de la syntaxe du transfert... URL=".$transfertSyntaxeURL);
         $transfertSyntaxe = APIController::send($transfertSyntaxeURL);
         
         if ($transfertSyntaxe == null) {
