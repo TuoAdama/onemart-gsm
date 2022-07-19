@@ -55,4 +55,23 @@ class FormatMessage extends Controller
     {
         return substr($message, strpos($message, 'Ref') + strlen("Ref "));
     }
+
+    public static function transfertFormat($message)
+    {
+        $message = array_map(function($msg){
+            return trim($msg);
+        }, explode('.', $message));
+
+        $msg1 = explode('Fcfa au', $message[0]);
+        $msg1 = str_replace(['Vous avez transfere','numero'], ['', ''], $msg1);
+        $msg1 = str_replace(' ', '', $msg1);
+        $result['montant'] = $msg1[0];
+        $result['numero'] = $msg1[1];
+
+        $msg2 = str_replace(['Fcfa', 'Votre solde actuel est '], '', $message[1]);
+        $result['solde'] = str_replace(' ', '', $msg2);
+        $result['reference'] = str_replace('Ref ', '', $message[2]);
+
+        return $result;
+    }
 }

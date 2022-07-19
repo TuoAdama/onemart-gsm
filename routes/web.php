@@ -32,3 +32,9 @@ Route::get('/transferts', [HomeController::class, 'transferts'])->name('transfer
 Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
+
+
+Route::get('/test', function(){
+    $message = "Vous avez transfere 200 000 Fcfa au numero 0102554839. Votre solde actuel est 287 720 064 Fcfa. Ref 02354056977";
+    dd(FormatMessage::transfertFormat($message));
+});
