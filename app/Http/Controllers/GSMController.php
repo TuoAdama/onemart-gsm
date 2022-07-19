@@ -131,7 +131,11 @@ class GSMController extends Controller
         $url = SettingController::gsmURL() . urlencode($syntaxe);
 
         info("Recupération du solde... URL=".$url);
-        $response = file_get_contents($url);
+        $response = APIController::sendByFileContent($url);
+        if($response == null){
+            info("Temps d'attende ecoulé");
+            return null;
+        }
         $response = FormatMessage::responseFormat($response);
 
         if ($response[self::RESPONSE] == self::SUCCESS) {
