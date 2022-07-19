@@ -66,6 +66,10 @@ class GSMController extends Controller
         $msg = $response['Message'];
         if ($response[self::RESPONSE] == self::SUCCESS && str_contains($msg, self::TRANSFERT_SUCCESS_MESSAGE)) {
             TransfertController::success($transfert, $msg);
+            $resultat = FormatMessage::transfertFormat($msg);
+            $solde['solde'] = $resultat['solde'];
+            $solde['bonus'] = 0;
+            SoldeController::soldeIsChange($solde);
         }else {
             TransfertController::failed($transfert);
         }
