@@ -18,14 +18,14 @@ class FormatMessage extends Controller
 
     public static function responseFormat($message)
     {
+        info("Message:".$message);
+        
         if($message == null){
             return [
                 'Response' => GSMController::ERROR,
                 'Message' => ''
             ];
         }
-
-        info("Message:".$message);
         $message = nl2br(trim($message));
         $response = explode('<br />', $message);
         $response = array_map(function ($res) {
