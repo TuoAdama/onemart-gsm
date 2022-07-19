@@ -16,7 +16,7 @@ class SoldeController extends Controller
         self::LogSoldeConsultation("Mise à jour du solde: [solde=".$solde['solde'].", bonus=".$solde['bonus']."]");
         $solde = Solde::create($solde);
         $soldeUrl = SettingController::sendSoldeURL();
-        self::LogSoldeConsultation("Transmission du solde...");
+        self::LogSoldeConsultation("Transmission du solde... URL=".$soldeUrl);
         $result = APIController::post($soldeUrl, $solde->toArray());
         self::LogSoldeConsultation("Status code: ".$result->status());
     }
