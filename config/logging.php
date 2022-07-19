@@ -119,7 +119,7 @@ return [
         ],
         'store_transfert' => [
             'driver' => 'single',
-            'path' => storage_path('logs/make_transfert.log'),
+            'path' => storage_path('logs/store_transfert.log'),
         ]
     ],
 
