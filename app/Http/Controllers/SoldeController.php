@@ -22,7 +22,7 @@ class SoldeController extends Controller
     public static function getSolde()
     {
         $soldeSyntaxeURL = SettingController::syntaxeSoldeURL();
-        self::LogSoldeConsultation("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
+        self::LogSoldeConsultation("\n\nRecupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
         $syntaxe = APIController::send($soldeSyntaxeURL);
         
         if($syntaxe == null){
