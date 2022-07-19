@@ -35,6 +35,5 @@ Route::post('/settings/update', [SettingController::class, 'update'])->name('set
 
 
 Route::get('/test', function(){
-    $message = "Vous avez transfere 200 000 Fcfa au numero 0102554839. Votre solde actuel est 287 720 064 Fcfa. Ref 02354056977";
-    dd(FormatMessage::transfertFormat($message));
+    $message = "Vous avez transfere 200 000 Fcfa au numero 0140269300. Votre solde actuel est 287 220 064 Fcfa. Ref 02354067192";
 });

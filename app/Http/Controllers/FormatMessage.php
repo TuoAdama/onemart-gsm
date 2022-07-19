@@ -74,4 +74,13 @@ class FormatMessage extends Controller
 
         return $result;
     }
+
+    public static function formatFlashMessage($message)
+    {
+        $str = "Vous avez transfere MONTANT Fcfa au numero NUMERO";
+        $msg = self::transfertFormat($message);
+        $montant = number_format($msg['montant'], 0, '', ' ');
+
+        return str_replace(['MONTANT', 'NUMERO'], [$montant, $msg['numero']], $str);
+    }
 }

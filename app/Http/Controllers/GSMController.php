@@ -15,6 +15,7 @@ class GSMController extends Controller
     const REPEAT_MESSAGE = "souhaitez-vous continuer";
     const USSD_FAILED_TIMEOUT_MESSAGE = "Send USSD failed, timeout";
     const USSD_FAILED_OPERATION_NOT_SUPPORT_MESSAGE = "Send USSD failed, Operation is not supported";
+    const TRANSFERT_SUCCESS_MESSAGE = "Vous avez transfere";
     const SUCCESS = "Success";
     const RESPONSE = "Response";
     const ERROR = "Error";
@@ -88,16 +89,14 @@ class GSMController extends Controller
         }
 
         if ($response[self::RESPONSE] == self::SUCCESS) {
-            if (str_contains($response['Message'], self::INSUFFICIENT_MESSAGE)) {
-                TransfertController::failed($transfert);
-            }else if(str_contains($response['Message'], self::INSUFFICIENT_MESSAGE)){
-
-            }
-            else{
-                TransfertController::success($transfert, $response['Message']);
+            $msg = $response['Message'];
+            if(str_contains($msg, self::TRANSFERT_SUCCESS_MESSAGE)){
+                TransfertController::success($transfert, $msg);
                 if($currentSolde != null){
                     SoldeController::soldeIsChange($currentSolde);
                 }
+            }else {
+                TransfertController::failed($transfert);
             }
         }
     }
