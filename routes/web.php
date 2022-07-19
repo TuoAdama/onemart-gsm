@@ -6,6 +6,7 @@ use App\Http\Controllers\GSMController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SoldeController;
 use App\Http\Controllers\TransfertController;
 use App\Models\Transfert;
 use Carbon\Carbon;
@@ -36,10 +37,5 @@ Route::post('/settings/update', [SettingController::class, 'update'])->name('set
 
 
 Route::get('/test', function(){
-    $huit_heure = Carbon::createFromTime(8)->format('H:i');
-    $midi = Carbon::createFromTime(12,30)->format('H:i');
-    $d = Carbon::createFromTime(16)->format('H:i');
-    $m = Carbon::createFromTime(20)->format('H:i');
-
-    dd($huit_heure, $midi, $d, $m);
+    dd(SoldeController::getSolde());
 });

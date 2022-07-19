@@ -73,7 +73,7 @@ class SoldeController extends Controller
     public static function LogSoldeConsultation($message)
     {
         Log::channel('solde_consultation')
-        ->self::LogSoldeConsultation($message);
+        ->info($message);
     }
 
 }
