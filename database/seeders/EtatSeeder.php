@@ -15,7 +15,7 @@ class EtatSeeder extends Seeder
      */
     public function run()
     {
-        $etats = ['EN COURS', 'EXECUTE', 'ECHOUE'];
+        $etats = ['EN COURS', 'EXECUTE', 'ECHOUE', 'SUSPENDU'];
         foreach ($etats as $etat) {
             $et = Etat::where('libelle',$etat)->first();
             if($et == null ){
