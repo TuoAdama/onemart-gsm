@@ -30,7 +30,7 @@ class APIController extends Controller
     public static function sendByFileContent($url)
     {
         try {
-            return file_get_contents($url, false, stream_context_create(["http" => ["timeout" => 10]]));
+            return file_get_contents($url, false, stream_context_create(["http" => ["timeout" => 30]]));
         } catch (ErrorException $th) {
             return null;
         }
