@@ -19,8 +19,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('transfert:store')->everyMinute()->runInBackground();
-        $schedule->command('transfert:send')->everyMinute()->runInBackground();
+        $schedule->command('transfert:store')->withoutOverlapping()->runInBackground();
+        $schedule->command('transfert:send')->withoutOverlapping()->runInBackground();
     }
 
     /**

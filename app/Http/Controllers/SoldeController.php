@@ -14,4 +14,9 @@ class SoldeController extends Controller
         info("Transmission du solde...");
         APIController::post($soldeUrl, $solde->toArray());
     }
+
+    public function getSolde()
+    {
+        $soldeSyntaxeURL = SettingController::syntaxeSoldeURL();
+    }
 }

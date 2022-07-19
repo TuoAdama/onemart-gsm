@@ -13,8 +13,11 @@ class GSMController extends Controller
 
     const INSUFFICIENT_MESSAGE = "Insufficient funds";
     const REPEAT_MESSAGE = "souhaitez-vous continuer";
+    const USSD_FAILED_TIMEOUT_MESSAGE = "Send USSD failed, timeout";
+    const USSD_FAILED_OPERATION_NOT_SUPPORT_MESSAGE = "Send USSD failed, Operation is not supported";
     const SUCCESS = "Success";
     const RESPONSE = "Response";
+    const ERROR = "Error";
 
     public static function make(Transfert $transfert)
     {
@@ -43,11 +46,18 @@ class GSMController extends Controller
             return;
         }
 
+        $status  = $transfertSyntaxe->status();
+        if($status != 200){
+            info("Status Code:".$status);
+            TransfertController::failed($transfert);
+            return;
+        }
+
         $transfertSyntaxe = json_decode($transfertSyntaxe, true)['syntaxe'];
 
         info('Syntaxe du transfert= '.$transfertSyntaxe);
 
-        $transfertSyntaxe = str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $transfertSyntaxe);
+        $transfertSyntaxe = TransfertController::formatSyntaxe($transfert, $transfertSyntaxe);
 
         info("Envoie du transfert...");
         $gsmURL = SettingController::gsmURL();
@@ -80,7 +90,10 @@ class GSMController extends Controller
         if ($response[self::RESPONSE] == self::SUCCESS) {
             if (str_contains($response['Message'], self::INSUFFICIENT_MESSAGE)) {
                 TransfertController::failed($transfert);
-            }else{
+            }else if(str_contains($response['Message'], self::INSUFFICIENT_MESSAGE)){
+
+            }
+            else{
                 TransfertController::success($transfert, $response['Message']);
                 if($currentSolde != null){
                     SoldeController::soldeIsChange($currentSolde);
@@ -94,8 +107,15 @@ class GSMController extends Controller
         $soldeSyntaxeURL = SettingController::syntaxeSoldeURL();
         info("Recupération de la syntaxe du solde... URL=".$soldeSyntaxeURL);
         $syntaxe = APIController::send($soldeSyntaxeURL);
+        
         if($syntaxe == null){
             info("Impossible de recupérer la syntaxe du solde");
+            return null;
+        }
+        
+        $status = $syntaxe->status();
+        info('Status code: '.$status);
+        if($syntaxe->status() != 200){
             return null;
         }
         

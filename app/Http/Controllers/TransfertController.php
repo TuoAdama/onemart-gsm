@@ -8,6 +8,8 @@ use App\Models\Setting;
 use App\Models\Transfert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class TransfertController extends Controller
 {
@@ -53,10 +55,10 @@ class TransfertController extends Controller
     {
         $etat_ids = Etat::whereIn('libelle', ['EN COURS', 'ECHOUE'])->get()
             ->pluck('id')->toArray();
-        $transferts = Transfert::whereIn('etat_id', $etat_ids)->get();
-        $transferts->each(function ($transfert) {
-            GSMController::make($transfert);
-        });
+        $transfert = Transfert::whereIn('etat_id', $etat_ids)
+                        ->orderBy('updated_at')
+                        ->first();
+        GSMController::make($transfert);
     }
 
     public static function failed(Transfert $transfert)
@@ -85,5 +87,10 @@ class TransfertController extends Controller
         $transfert->sms = $message;
         info("Envoie du transfert en ligne...");
         APIController::post(SettingController::smsStorage(), $transfert->toArray());
+    }
+
+    public static function formatSyntaxe($transfert, $syntaxe)
+    {
+       return str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $syntaxe);
     }
 }

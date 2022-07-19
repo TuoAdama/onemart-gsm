@@ -24,14 +24,17 @@ class FormatMessage extends Controller
         $response = array_map(function ($res) {
             return trim($res);
         }, $response);
-
-        $result = explode('Response: ', $response[1])[1];
-        $message = explode('Message: ', $response[2])[1];
-
-        return [
-            'Response' => $result,
-            'Message' => $message,
-        ];
+        if (str_contains($message,'Response')) {
+            $result['Response'] = explode('Response: ', $response[1])[1];
+        }else{
+            $result['Response'] = GSMController::ERROR;
+        }
+        if(str_contains($message,'Message')){
+            $result['Message'] = explode('Message: ', $response[2])[1];
+        }else{
+            $result['Message'] = "";
+        }
+        return $result;
     }
 
     public static function getMontant($separator, $tab)
