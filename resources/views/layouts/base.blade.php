@@ -18,12 +18,13 @@
 
 	<!-- App CSS -->
 	<link id="theme-style" rel="stylesheet" href="{{asset('assets/css/portal.css')}}">
+	<link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	@stack('css')
 
 </head>
 
 <body class="app">
-	@include('partials.header')
+	@include('partials.sidebar')
 	<!--//app-header-->
 
 	<div class="app-wrapper">
@@ -33,15 +34,15 @@
 
 
 	<!-- Javascript -->
+	<script src="{{asset('assets/js/jquery.js')}}"></script>
 	<script src="{{asset('assets/plugins/popper.min.js')}}"></script>
 	<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
-
-	<!-- Charts JS -->
-	<script src="{{asset('assets/plugins/chart.js/chart.min.js')}}"></script>
-	<script src="{{asset('assets/js/index-charts.js')}}"></script>
-
-	<!-- Page Specific JS -->
-	<script src="{{asset('assets/js/app.js')}}"></script>
+	<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready( function () {
+		  $('#table').DataTable();
+	  } );
+	</script>
 
 	@stack('scripts')
 

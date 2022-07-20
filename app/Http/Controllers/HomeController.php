@@ -22,7 +22,7 @@ class HomeController extends Controller
 
     public function transferts()
     {
-        $transferts = Transfert::orderBy('created_at', 'desc')->paginate(10);
+        $transferts = Transfert::orderBy('created_at', 'desc')->get();
 
         return view('pages.transferts', [
             'transferts' => $transferts,
@@ -32,7 +32,7 @@ class HomeController extends Controller
 
     public function soldes()
     {
-        $soldes = Solde::orderBy('id', 'desc')->paginate(10);
+        $soldes = Solde::orderBy('id', 'desc')->get();
         return view('pages.soldes', [
             'soldes' => $soldes
         ]);

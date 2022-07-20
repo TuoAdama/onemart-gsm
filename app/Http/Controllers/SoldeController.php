@@ -13,7 +13,7 @@ class SoldeController extends Controller
 
     public static function soldeIsChange($solde)
     {
-        self::LogSoldeConsultation("Mise à jour du solde: [solde=".$solde['solde'].", bonus=".$solde['bonus']."]");
+        self::LogSoldeConsultation("\n\nMise à jour du solde: [solde=".$solde['solde'].", bonus=".$solde['bonus']."]");
         $solde = Solde::create($solde);
         $soldeUrl = SettingController::sendSoldeURL();
         self::LogSoldeConsultation("Transmission du solde... URL=".$soldeUrl);

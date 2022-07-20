@@ -22,7 +22,7 @@ class TransfertController extends Controller
         if ($setting != null) {
             self::LogStoreTransfert("URL=" . $setting);
             $response = APIController::send($setting);
-            self::LogStoreTransfert("Status code: ". $response->status());
+            self::LogStoreTransfert("Status code: " . $response->status());
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);
             }
@@ -59,10 +59,12 @@ class TransfertController extends Controller
             ->pluck('id')
             ->toArray();
         $transfert = Transfert::whereIn('etat_id', $etat_ids)
-                        ->orderBy('updated_at')
-                        ->first();
-        info("Recuperation du transfert:", $transfert->toArray());
-        GSMController::make($transfert);
+            ->orderBy('updated_at')
+            ->first();
+        if ($transfert != null) {
+            info("Recuperation du transfert:", $transfert->toArray());
+            GSMController::make($transfert);
+        }
     }
 
     public static function failed(Transfert $transfert)
@@ -96,7 +98,7 @@ class TransfertController extends Controller
 
     public static function formatSyntaxe($transfert, $syntaxe)
     {
-       return str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $syntaxe);
+        return str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $syntaxe);
     }
 
     public static function LogStoreTransfert($message)

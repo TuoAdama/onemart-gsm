@@ -18,6 +18,6 @@ class Transfert extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->locale('fr')->diffForHumans();
+        return Carbon::parse($value)->locale('fr')->isoFormat('dddd D-m-Y');
     }
 }

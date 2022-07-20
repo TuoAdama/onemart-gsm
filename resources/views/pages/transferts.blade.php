@@ -6,7 +6,7 @@
             <h1 class="app-page-title">Transferts</h1>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="table">
                         <thead>
                           <tr>
                             <th scope="col">Date</th>
@@ -28,7 +28,6 @@
                           @endforeach
                         </tbody>
                       </table>
-                      {{$transferts->links()}}
                 </div>
             </div>
         </div>
