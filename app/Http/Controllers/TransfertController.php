@@ -22,6 +22,10 @@ class TransfertController extends Controller
         if ($setting != null) {
             self::LogStoreTransfert("URL=" . $setting);
             $response = APIController::send($setting);
+            if($response == null){
+                self::LogStoreTransfert("url inacessible");
+                return [];
+            }
             self::LogStoreTransfert("Status code: " . $response->status());
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);
@@ -64,6 +68,8 @@ class TransfertController extends Controller
         if ($transfert != null) {
             info("Recuperation du transfert:", $transfert->toArray());
             GSMController::make($transfert);
+        }else{
+            info("Aucun transfert en cours");
         }
     }
 
