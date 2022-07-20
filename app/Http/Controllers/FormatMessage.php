@@ -18,9 +18,9 @@ class FormatMessage extends Controller
 
     public static function responseFormat($message)
     {
-        info("Message:".$message);
-        
-        if($message == null){
+        info("Message:" . $message);
+
+        if ($message == null) {
             return [
                 'Response' => GSMController::ERROR,
                 'Message' => ''
@@ -31,14 +31,14 @@ class FormatMessage extends Controller
         $response = array_map(function ($res) {
             return trim($res);
         }, $response);
-        if (str_contains($message,'Response')) {
+        if (str_contains($message, 'Response')) {
             $result['Response'] = explode('Response: ', $response[1])[1];
-        }else{
+        } else {
             $result['Response'] = GSMController::ERROR;
         }
-        if(str_contains($message,'Message')){
+        if (str_contains($message, 'Message')) {
             $result['Message'] = explode('Message: ', $response[2])[1];
-        }else{
+        } else {
             $result['Message'] = "";
         }
         return $result;
@@ -58,20 +58,25 @@ class FormatMessage extends Controller
 
     public static function transfertFormat($message)
     {
-        $message = array_map(function($msg){
+        $message = array_map(function ($msg) {
             return trim($msg);
         }, explode('.', $message));
 
-        $msg1 = explode('Fcfa au', $message[0]);
-        $msg1 = str_replace(['Vous avez transfere','numero'], ['', ''], $msg1);
-        $msg1 = str_replace(' ', '', $msg1);
-        $result['montant'] = $msg1[0];
-        $result['numero'] = $msg1[1];
+        // Montant
+        $m1 = $message[0];
+        $len1 = strlen("Vous avez transfere ");
+        $pos = strpos($m1, "Fcfa");
+        $montant = substr($m1, $len1, $pos - $len1);
+        $result['montant'] = str_replace(' ', '', $montant);
+
+        // Numero
+        $pos = strpos($m1, 'numero');
+        $len2 = strlen('numero ');
+        $result['numero'] = substr($m1, $pos+$len2, 10);
 
         $msg2 = str_replace(['Fcfa', 'Votre solde actuel est '], '', $message[1]);
         $result['solde'] = str_replace(' ', '', $msg2);
         $result['reference'] = str_replace('Ref ', '', $message[2]);
-
         return $result;
     }
 
