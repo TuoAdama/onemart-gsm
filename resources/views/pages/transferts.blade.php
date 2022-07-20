@@ -19,7 +19,7 @@
                         <tbody>
                           @foreach ($transferts as $transfert)
                               <tr>
-                                <td>{{$transfert->created_at}}</td>
+                                <td>{{$transfert->updated_at->locale('fr')->isoFormat('lll')}}</td>
                                 <td>{{$transfert->id}}</td>
                                 <td>{{$transfert->numero}}</td>
                                 <td>{{number_format($transfert->montant, 0, '.', ' ')}} FCFA</td>

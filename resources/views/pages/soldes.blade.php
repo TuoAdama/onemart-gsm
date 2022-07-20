@@ -19,7 +19,7 @@
                         <tbody>
                           @foreach ($soldes as $solde)
                               <tr>
-                                <td>{{$solde->created_at}}</td>
+                                <td>{{$solde->updated_at->locale('fr')->isoFormat('lll')}}</td>
                                 <td>{{$solde->id}}</td>
                                 <td>{{number_format($solde->bonus, 0, '.', ' ')}} FCFA</td>
                                 <td>{{number_format($solde->solde, 0, '.', ' ')}} FCFA</td>
