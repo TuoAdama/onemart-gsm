@@ -53,11 +53,15 @@ class TransfertController extends Controller
 
     public static function make()
     {
-        $etat_ids = Etat::whereIn('libelle', ['EN COURS', 'ECHOUE'])->get()
-            ->pluck('id')->toArray();
+        info("\n\n----------------------------------------------------------------");
+        $etat_ids = Etat::whereIn('libelle', ['EN COURS', 'ECHOUE'])
+            ->get()
+            ->pluck('id')
+            ->toArray();
         $transfert = Transfert::whereIn('etat_id', $etat_ids)
                         ->orderBy('updated_at')
                         ->first();
+        info("Recuperation du transfert:".$transfert->toArray());
         GSMController::make($transfert);
     }
 

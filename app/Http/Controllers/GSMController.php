@@ -21,9 +21,7 @@ class GSMController extends Controller
     const ERROR = "Error";
 
     public static function make(Transfert $transfert)
-    {
-        info("\n\n----------------------------------------------------------------");
-        
+    {   
         info("Execution du transfert: [id=".$transfert->id.", status="
         .$transfert->etat->libelle.", numero=".$transfert->numero.", montant=".$transfert->montant."]");
 
