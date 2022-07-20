@@ -61,7 +61,7 @@ class TransfertController extends Controller
         $transfert = Transfert::whereIn('etat_id', $etat_ids)
                         ->orderBy('updated_at')
                         ->first();
-        info("Recuperation du transfert:".$transfert->toArray());
+        info("Recuperation du transfert:", $transfert->toArray());
         GSMController::make($transfert);
     }
 
@@ -90,7 +90,8 @@ class TransfertController extends Controller
         $transfert->reference = $reference;
         $transfert->sms = $message;
         info("Envoie du transfert en ligne...");
-        APIController::post(SettingController::smsStorage(), $transfert->toArray());
+        $result = APIController::post(SettingController::smsStorage(), $transfert->toArray());
+        info("Status:", $result->status());
     }
 
     public static function formatSyntaxe($transfert, $syntaxe)
