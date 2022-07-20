@@ -91,7 +91,7 @@ class TransfertController extends Controller
         $transfert->sms = $message;
         info("Envoie du transfert en ligne...");
         $result = APIController::post(SettingController::smsStorage(), $transfert->toArray());
-        info("Status:", $result->status());
+        info("Status:", [$result->status()]);
     }
 
     public static function formatSyntaxe($transfert, $syntaxe)
