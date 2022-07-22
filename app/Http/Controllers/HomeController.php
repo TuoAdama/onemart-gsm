@@ -22,7 +22,7 @@ class HomeController extends Controller
 
     public function transferts()
     {
-        $transferts = Transfert::orderBy('created_at', 'desc')->get();
+        $transferts = Transfert::orderBy('updated_at', 'desc')->get();
 
         return view('pages.transferts', [
             'transferts' => $transferts,
