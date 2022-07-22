@@ -40,5 +40,6 @@ Route::get('transferts/update/transfert_id={transfert_id}/etat={etat}', [Transfe
 
 Route::get("/transfert/relaunch", [TransfertController::class, 'relaunch'])->name("relaunch");
 Route::get("/transfert/cancel", [TransfertController::class, 'cancel'])->name("cancel");
+Route::get("/transfert/annuler_encours", [TransfertController::class, 'annulerTransfertEncours'])->name("annuler.encours");
 
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');

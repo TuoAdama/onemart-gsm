@@ -135,4 +135,12 @@ class TransfertController extends Controller
 
         return redirect()->back()->with("cancel", 'Transferts annulés.');
     }
+
+    public function annulerTransfertEncours()
+    {
+        Transfert::where('etat_id', Etat::EN_COURS)
+        ->update(['etat_id' => Etat::ANNULER]);
+
+        return redirect()->back()->with("cancel", 'Transferts annulés.');
+    }
 }

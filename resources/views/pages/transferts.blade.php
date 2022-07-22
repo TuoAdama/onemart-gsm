@@ -16,6 +16,9 @@
             @endif
             <div class="row">
               <div class="col-md-4 mb-4">
+                <a class="btn btn-success" data-toggle="modal" data-target="#encours">Annuler tous les transferts en cours</a>
+              </div>
+              <div class="col-md-4 mb-4">
                 <a class="btn btn-warning" data-toggle="modal" data-target="#relancer">Relancer tous les transferts échoués</a>
               </div>
               <div class="col-md-4 mb-4">
@@ -59,6 +62,7 @@
                       </table>
                 </div>
             </div>
+            
         </div>
     </div>
 
@@ -93,6 +97,24 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
             <a href="{{route('relaunch')}}" class="btn btn-primary">Confirmer</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="encours" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-danger">
+            <h5 class="modal-title" id="exampleModalLabel">Annuler tous les transferts en cours ?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+            <a href="{{route('annuler.encours')}}" class="btn btn-primary">Confirmer</a>
           </div>
         </div>
       </div>
