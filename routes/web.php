@@ -34,4 +34,11 @@ Route::get('/configuration', [HomeController::class, 'configuration'])->name('co
 Route::get('/transferts', [HomeController::class, 'transferts'])->name('transferts');
 Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 
+Route::get('transferts/update/transfert_id={transfert_id}/etat={etat}', [TransfertController::class, 'updateTransfert'])
+->name('transfert.update');
+
+
+Route::get("/transfert/relaunch", [TransfertController::class, 'relaunch'])->name("relaunch");
+Route::get("/transfert/cancel", [TransfertController::class, 'cancel'])->name("cancel");
+
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');

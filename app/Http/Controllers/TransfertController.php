@@ -58,7 +58,7 @@ class TransfertController extends Controller
     public static function make()
     {
         info("\n\n----------------------------------------------------------------");
-        $etat_ids = Etat::whereIn('libelle', ['EN COURS', 'ECHOUE'])
+        $etat_ids = Etat::where('libelle', 'EN COURS')
             ->get()
             ->pluck('id')
             ->toArray();
@@ -110,5 +110,29 @@ class TransfertController extends Controller
     public static function LogStoreTransfert($message)
     {
         Log::channel('store_transfert')->info($message);
+    }
+
+    public function updateTransfert($transfert_id, $etat_id)
+    {
+        $trans = Transfert::find($transfert_id);
+        $trans->etat_id = $etat_id;
+        $trans->save();
+        return redirect()->back();
+    }
+
+    public function relaunch()
+    {
+        Transfert::where('etat_id', Etat::ECHOUE)
+        ->update(['etat_id' => Etat::EN_COURS]);
+
+        return redirect()->back()->with("relaunch", 'Transferts relancés.');
+    }
+
+    public function cancel()
+    {
+        Transfert::where('etat_id', Etat::ECHOUE)
+        ->update(['etat_id' => Etat::ANNULER]);
+
+        return redirect()->back()->with("cancel", 'Transferts annulés.');
     }
 }

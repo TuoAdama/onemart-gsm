@@ -26,7 +26,7 @@ class HomeController extends Controller
 
         return view('pages.transferts', [
             'transferts' => $transferts,
-            'colors' => ['text-warning', 'text-success', 'text-danger', 'text-primary']
+            'colors' => ['text-warning', 'text-success', 'text-danger', 'text-primary', 'text-danger']
         ]);
     }
 
