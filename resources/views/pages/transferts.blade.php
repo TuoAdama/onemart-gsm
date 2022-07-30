@@ -15,17 +15,6 @@
             </div>
             @endif
             <div class="row">
-              <div class="col-md-4 mb-4">
-                <a class="btn btn-success" data-toggle="modal" data-target="#encours">Annuler tous les transferts en cours</a>
-              </div>
-              <div class="col-md-4 mb-4">
-                <a class="btn btn-warning" data-toggle="modal" data-target="#relancer">Relancer tous les transferts échoués</a>
-              </div>
-              <div class="col-md-4 mb-4">
-                <a class="btn btn-danger" data-toggle="modal" data-target="#annuler">Annuler tous les transferts échoués</a>
-              </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12">
                     <table class="table table-striped" id="table">
                         <thead>
@@ -49,12 +38,6 @@
                                       $etat = $transfert->etat;
                                   @endphp
                                   <span>{{$etat->libelle}}</span>
-                                  @if ($etat->id == 3 )
-                                      <a href="{{route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 1])}}" class="ms-3 btn btn-primary">R</a>
-                                      <a  href="{{route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 5])}}" class="ms-3 btn btn-danger">
-                                        <i class="fa-solid fa-arrow-rotate-right">A</i>
-                                      </a>
-                                  @endif
                                 </td>
                               </tr>
                           @endforeach
