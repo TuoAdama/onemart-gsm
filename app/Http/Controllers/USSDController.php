@@ -8,6 +8,11 @@ class USSDController extends Controller
 {
     public static function make($syntaxe)
     {
-        dd(SettingController::gsmURL());
+        info("Syntaxe: ".$syntaxe);
+        $url = SettingController::gsmURL().urlencode($syntaxe);
+        info('URL:'.$url);
+        $response = APIController::sendByFileContent($url);
+        info('Message'.$response);
+        return $response;
     }
 }

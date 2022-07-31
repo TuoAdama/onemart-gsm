@@ -14,11 +14,16 @@ class OperationMessage extends Model
     const INSUFFICIENT_FUNDS = "Insufficient funds";
     const OPERATION_NOT_SUPPORTED = "Send USSD failed, Operation is not supported.";
     const TIMEOUT="Send USSD failed, timeout.";
+    CONST PIN_INVALID="PIN non-valide";
 
     public static function errorsMessages()
     {
-        return [self::INSUFFICIENT_FUNDS, self::OPERATION_NOT_SUPPORTED,
-        self::TIMEOUT];
+        return [
+            self::INSUFFICIENT_FUNDS,
+            self::OPERATION_NOT_SUPPORTED,
+            self::TIMEOUT,
+            self::PIN_INVALID
+        ];
     }
 
     public static function isErrorMEsssage($message)

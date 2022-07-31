@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SoldeController;
 use App\Http\Controllers\TransfertController;
+use App\Http\Controllers\USSDController;
 use App\Models\OperationMessage;
 use App\Models\Solde;
 use App\Models\Transfert;
@@ -35,3 +36,7 @@ Route::get('/configuration', [HomeController::class, 'configuration'])->name('co
 Route::get('/transferts', [HomeController::class, 'transferts'])->name('transferts');
 Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
+
+Route::get('/test', function(){
+    dd(USSDController::make("*414*00000# "));
+});
