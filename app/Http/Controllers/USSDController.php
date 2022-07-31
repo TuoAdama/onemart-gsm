@@ -13,6 +13,6 @@ class USSDController extends Controller
         info('URL:'.$url);
         $response = APIController::sendByFileContent($url);
         info('Message'.$response);
-        return $response;
+        return FormatMessage::responseFormat($response);
     }
 }

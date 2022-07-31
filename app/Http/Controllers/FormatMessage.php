@@ -31,6 +31,9 @@ class FormatMessage extends Controller
         $response = array_map(function ($res) {
             return trim($res);
         }, $response);
+        if(str_contains($message, 'Request')){
+            $result['Request'] = explode('Request:', $response[0])[1];
+        }
         if (str_contains($message, 'Response')) {
             $result['Response'] = explode('Response: ', $response[1])[1];
         } else {
