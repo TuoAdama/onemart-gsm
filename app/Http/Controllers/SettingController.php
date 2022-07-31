@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SettingController extends Controller
 {
@@ -17,7 +18,7 @@ class SettingController extends Controller
        return Setting::where('key',$key)->first()->value;
     }
 
-    public static function transfertSyntaxeURL()
+    public static function APItransfertSyntaxeURL():string
     {
         return self::url(self::getSetting("syntaxeTransfertURL"));
     }
@@ -42,7 +43,7 @@ class SettingController extends Controller
         return self::url(self::getSetting('appOnlineURL'));
     }
 
-    public static function syntaxeSoldeURL()
+    public static function APIsyntaxeSoldeURL()
     {
         return self::url(self::getSetting('syntaxeSoldeURL'));
     }

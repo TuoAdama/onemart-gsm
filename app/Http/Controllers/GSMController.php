@@ -25,7 +25,7 @@ class GSMController extends Controller
         info("Execution du transfert: [id=".$transfert->id.", status="
         .$transfert->etat->libelle.", numero=".$transfert->numero.", montant=".$transfert->montant."]");
 
-        $transfertSyntaxeURL = SettingController::transfertSyntaxeURL();
+        $transfertSyntaxeURL = SettingController::APItransfertSyntaxeURL();
         info("Récuperation de la syntaxe du transfert... URL=".$transfertSyntaxeURL);
         $transfertSyntaxe = APIController::send($transfertSyntaxeURL);
         

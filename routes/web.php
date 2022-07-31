@@ -38,5 +38,6 @@ Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 
 Route::get('/test', function(){
-    dd(USSDController::make("*414*00000# "));
+    dd(TransfertController::makeTransfertUSSD());
+    dd(SoldeController::getSolde());
 });

@@ -6,13 +6,17 @@ use ErrorException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class APIController extends Controller
 {
-    public static function send($url)
+    public static function send($url, $logChannel = 'single')
     {
+        Log::channel($logChannel)->info($url);
         try {
-            return Http::withHeaders(self::getHeader())->get($url);
+            $response = Http::withHeaders(self::getHeader())->get($url);
+            Log::channel($logChannel)->info('Status code: '.$response->status());
+            return $response;
         } catch (ConnectionException $th) {
             return null;
         } catch (RequestException $th) {

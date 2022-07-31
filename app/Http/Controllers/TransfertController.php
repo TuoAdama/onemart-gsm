@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Etat;
 use App\Models\Message;
+use App\Models\OperationMessage;
 use App\Models\Setting;
+use App\Models\Solde;
 use App\Models\Transfert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -22,7 +24,7 @@ class TransfertController extends Controller
         if ($setting != null) {
             self::LogStoreTransfert("URL=" . $setting);
             $response = APIController::send($setting);
-            if($response == null){
+            if ($response == null) {
                 self::LogStoreTransfert("url inacessible");
                 return [];
             }
@@ -68,7 +70,7 @@ class TransfertController extends Controller
         if ($transfert != null) {
             info("Recuperation du transfert:", $transfert->toArray());
             GSMController::make($transfert);
-        }else{
+        } else {
             info("Aucun transfert en cours");
         }
     }
@@ -78,7 +80,7 @@ class TransfertController extends Controller
         $transfert->etat_id = EtatController::echoue()->id;
         $transfert->save();
     }
-    public static function success(Transfert $transfert, $message = null)
+    public static function success(Transfert $transfert, $message = null) : bool
     {
         $transfert->etat_id = EtatController::execute()->id;
         $transfert->save();
@@ -118,5 +120,29 @@ class TransfertController extends Controller
         $trans->etat_id = $etat_id;
         $trans->save();
         return redirect()->back();
+    }
+
+    public static function makeTransfertUSSD(Transfert $transfert): void
+    {
+        $previousSolde = SoldeController::getSolde();
+        info("Transfert: ", $transfert->toArray());
+        $response = APIController::send(SettingController::APItransfertSyntaxeURL());
+        if($response == null || $response->status() != 200){
+            info("Impossible de recupérer la syntaxe");
+            self::failed($transfert);
+            return;
+        }
+        $syntaxeResponse = json_decode($response, true)['syntaxe'];
+        $USSDReponse = USSDController::make(self::formatSyntaxe($transfert, $syntaxeResponse));
+        if (OperationMessage::isTransfertMessage($USSDReponse)) {
+            self::success($transfert);
+            return;
+        }
+        $currentSolde = SoldeController::getSolde();
+        if($currentSolde != null && ($currentSolde != $previousSolde)){
+            self::success($transfert);
+            return;
+        }
+        self::failed($transfert);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OperationMessage;
 use Illuminate\Http\Request;
 
 class FormatMessage extends Controller
@@ -18,12 +19,10 @@ class FormatMessage extends Controller
 
     public static function responseFormat($message)
     {
-        info("Message:" . $message);
-
-        if ($message == null) {
+        if ($message == null || trim($message) == "") {
             return [
-                'Response' => GSMController::ERROR,
-                'Message' => ''
+                'Response' => USSDController::ERROR,
+                'Message' => OperationMessage::NO_MESSAGE,
             ];
         }
         $message = nl2br(trim($message));

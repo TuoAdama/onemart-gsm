@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OperationMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class USSDController extends Controller
 {
-    public static function make($syntaxe)
+    const SUCCESS = "Success";
+    const RESPONSE = "Response";
+    const ERROR = "Error";
+    const MESSAGE = "Message";
+
+    public static function make(string $syntaxe, $logChannel = 'single'):array
     {
-        info("Syntaxe: ".$syntaxe);
+        Log::channel($logChannel)->info("Syntaxe: ".$syntaxe);
         $url = SettingController::gsmURL().urlencode($syntaxe);
-        info('URL:'.$url);
+        Log::channel($logChannel)->info('URL:'.$url);
         $response = APIController::sendByFileContent($url);
-        info('Message'.$response);
+        Log::channel($logChannel)->info('Message'.$response);
         return FormatMessage::responseFormat($response);
     }
 }
