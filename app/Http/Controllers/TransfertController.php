@@ -8,6 +8,7 @@ use App\Models\OperationMessage;
 use App\Models\Setting;
 use App\Models\Solde;
 use App\Models\Transfert;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -37,7 +38,7 @@ class TransfertController extends Controller
         return [];
     }
 
-    public static function store()
+    public static function store(): void
     {
         $transferts = self::getTransfertOnline();
         $etat_id = Etat::where('libelle', 'EN COURS')->first()->id;
@@ -57,7 +58,7 @@ class TransfertController extends Controller
         }
     }
 
-    public static function make()
+    public static function make(): void
     {
         info("\n\n----------------------------------------------------------------");
         $etat_ids = Etat::where('libelle', 'EN COURS')
@@ -75,12 +76,12 @@ class TransfertController extends Controller
         }
     }
 
-    public static function failed(Transfert $transfert)
+    public static function failed(Transfert $transfert): void
     {
         $transfert->etat_id = EtatController::echoue()->id;
         $transfert->save();
     }
-    public static function success(Transfert $transfert, $message = null) : bool
+    public static function success(Transfert $transfert, string $message = null): void
     {
         $transfert->etat_id = EtatController::execute()->id;
         $transfert->save();
@@ -104,17 +105,17 @@ class TransfertController extends Controller
         info("Status:", [$result->status()]);
     }
 
-    public static function formatSyntaxe($transfert, $syntaxe)
+    public static function formatSyntaxe(Transfert $transfert, string $syntaxe): string
     {
         return str_replace(["NUMERO", "MONTANT"], [$transfert->numero, $transfert->montant], $syntaxe);
     }
 
-    public static function LogStoreTransfert($message)
+    public static function LogStoreTransfert(string $message): void
     {
         Log::channel('store_transfert')->info($message);
     }
 
-    public function updateTransfert($transfert_id, $etat_id)
+    public function updateTransfert(int $transfert_id, int $etat_id): RedirectResponse
     {
         $trans = Transfert::find($transfert_id);
         $trans->etat_id = $etat_id;
@@ -127,7 +128,7 @@ class TransfertController extends Controller
         $previousSolde = SoldeController::getSolde();
         info("Transfert: ", $transfert->toArray());
         $response = APIController::send(SettingController::APItransfertSyntaxeURL());
-        if($response == null || $response->status() != 200){
+        if ($response == null || $response->status() != 200) {
             info("Impossible de recupérer la syntaxe");
             self::failed($transfert);
             return;
@@ -135,11 +136,11 @@ class TransfertController extends Controller
         $syntaxeResponse = json_decode($response, true)['syntaxe'];
         $USSDReponse = USSDController::make(self::formatSyntaxe($transfert, $syntaxeResponse));
         if (OperationMessage::isTransfertMessage($USSDReponse)) {
-            self::success($transfert);
+            self::success($transfert, $USSDReponse[USSDController::MESSAGE]);
             return;
         }
         $currentSolde = SoldeController::getSolde();
-        if($currentSolde != null && ($currentSolde != $previousSolde)){
+        if ($currentSolde != null && ($currentSolde != $previousSolde)) {
             self::success($transfert);
             return;
         }
