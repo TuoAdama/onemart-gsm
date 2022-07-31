@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SoldeController;
 use App\Http\Controllers\TransfertController;
+use App\Models\OperationMessage;
 use App\Models\Solde;
 use App\Models\Transfert;
 use Carbon\Carbon;
@@ -33,13 +34,4 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/configuration', [HomeController::class, 'configuration'])->name('configuration');
 Route::get('/transferts', [HomeController::class, 'transferts'])->name('transferts');
 Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
-
-Route::get('transferts/update/transfert_id={transfert_id}/etat={etat}', [TransfertController::class, 'updateTransfert'])
-->name('transfert.update');
-
-
-Route::get("/transfert/relaunch", [TransfertController::class, 'relaunch'])->name("relaunch");
-Route::get("/transfert/cancel", [TransfertController::class, 'cancel'])->name("cancel");
-Route::get("/transfert/annuler_encours", [TransfertController::class, 'annulerTransfertEncours'])->name("annuler.encours");
-
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
