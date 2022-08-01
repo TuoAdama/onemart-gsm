@@ -20,6 +20,17 @@ class USSDController extends Controller
         Log::channel($logChannel)->info('URL:'.$url);
         $response = APIController::sendByFileContent($url);
         Log::channel($logChannel)->info('Message'.$response);
-        return FormatMessage::responseFormat($response);
+        $USSDResponse = FormatMessage::responseFormat($response);
+        self::USSDCheck($USSDResponse);
+        return $USSDResponse;
+    }
+
+    public static function USSDCheck(array $response): int
+    {
+        $setting = SettingController::numOfFailed();
+        $value = OperationMessage::isSuccess($response) ? 0 
+                    : ++$setting->value;
+        $setting->update(compact('value'));
+        return $value;
     }
 }

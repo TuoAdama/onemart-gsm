@@ -33,7 +33,6 @@ class TransfertController extends Controller
             if ($response->status() == 200) {
                 return json_decode($response->body(), true);
             }
-            return [];
         }
         return [];
     }
@@ -69,8 +68,13 @@ class TransfertController extends Controller
             ->orderBy('updated_at')
             ->first();
         if ($transfert != null) {
-            info("Recuperation du transfert:", $transfert->toArray());
-            GSMController::make($transfert);
+            $result = self::makeTransfertUSSD($transfert);
+            if ($result) {
+                self::success($transfert, $result['message']);
+                SoldeController::soldeIsChange($result['solde']);
+            }else{
+                self::failed($transfert);
+            }
         } else {
             info("Aucun transfert en cours");
         }
@@ -123,27 +127,47 @@ class TransfertController extends Controller
         return redirect()->back();
     }
 
-    public static function makeTransfertUSSD(Transfert $transfert): void
+    public static function makeTransfertUSSD(Transfert $transfert): ?array
     {
         $previousSolde = SoldeController::getSolde();
+        if($previousSolde == null){
+            return null;
+        }
+        info("Previous solde: ".$previousSolde);
         info("Transfert: ", $transfert->toArray());
         $response = APIController::send(SettingController::APItransfertSyntaxeURL());
         if ($response == null || $response->status() != 200) {
             info("Impossible de recupérer la syntaxe");
-            self::failed($transfert);
-            return;
+            return null;
         }
         $syntaxeResponse = json_decode($response, true)['syntaxe'];
-        $USSDReponse = USSDController::make(self::formatSyntaxe($transfert, $syntaxeResponse));
+        $syntaxe = self::formatSyntaxe($transfert, $syntaxeResponse);
+        $USSDReponse = self::transfertOperation($transfert, $syntaxe);
+        $message = null;
+        $currentSolde = null;
+        if (count($USSDReponse)) {
+            $message = $USSDReponse[USSDController::MESSAGE];
+            $currentSolde = FormatMessage::transfertFormat($message)['solde'];
+        } else {
+            $currentSolde = SoldeController::getSolde();
+            if ($currentSolde == null || ($currentSolde == $previousSolde)) {
+                return null;
+            }
+        }
+        return [
+            'solde' => $currentSolde,
+            'message' => $message
+        ];
+    }
+
+    public static function transfertOperation(string $syntaxe): array
+    {
+        $USSDReponse = USSDController::make($syntaxe);
         if (OperationMessage::isTransfertMessage($USSDReponse)) {
-            self::success($transfert, $USSDReponse[USSDController::MESSAGE]);
-            return;
+            return $USSDReponse;
+        } else if (OperationMessage::isRepeatMessage($USSDReponse)) {
+            return self::transfertOperation("1");
         }
-        $currentSolde = SoldeController::getSolde();
-        if ($currentSolde != null && ($currentSolde != $previousSolde)) {
-            self::success($transfert);
-            return;
-        }
-        self::failed($transfert);
+        return [];
     }
 }

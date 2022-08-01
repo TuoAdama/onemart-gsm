@@ -29,7 +29,7 @@ class OperationMessage extends Model
         ];
     }
 
-    public static function isSuccess($response):bool
+    public static function isSuccess(array $response):bool
     {
         $res = array_filter(self::errorsMessages(), function($errorMessage) use ($response){
             return str_contains($errorMessage, $response[USSDController::MESSAGE]);
@@ -45,5 +45,10 @@ class OperationMessage extends Model
     public static function isTransfertMessage(array $response):bool
     {
         return str_contains($response[USSDController::MESSAGE], self::TRANSFERT_SUCCESS);
+    }
+
+    public static function isRepeatMessage(array $response):bool
+    {
+        return str_contains($response[USSDController::MESSAGE], self::REPEAT_MESSAGE);
     }
 }

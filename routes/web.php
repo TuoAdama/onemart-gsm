@@ -13,6 +13,8 @@ use App\Models\OperationMessage;
 use App\Models\Solde;
 use App\Models\Transfert;
 use Carbon\Carbon;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +40,5 @@ Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 
 Route::get('/test', function(){
-    dd(TransfertController::makeTransfertUSSD());
-    dd(SoldeController::getSolde());
+    dd(null == 2);
 });

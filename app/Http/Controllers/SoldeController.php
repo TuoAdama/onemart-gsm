@@ -13,7 +13,7 @@ class SoldeController extends Controller
     const SOLDE_SUCCESS_MESSAGE = "Votre Solde EVD est";
     const SOLDE_LOG = "solde_consultation";
 
-    public static function soldeIsChange($solde)
+    public static function soldeIsChange($solde):void
     {
         self::LogSoldeConsultation("\n\nMise à jour du solde: [solde=" . $solde['solde'] . ", bonus=" . $solde['bonus'] . "]");
         $solde = Solde::create($solde);
@@ -23,7 +23,7 @@ class SoldeController extends Controller
         self::LogSoldeConsultation("Status code: " . $result->status());
     }
 
-    public static function getSolde():int
+    public static function getSolde(): ?int
     {
         self::LogSoldeConsultation("\n\nRecupération de la syntaxe du solde:");
         $soldeSyntaxeURL = SettingController::APIsyntaxeSoldeURL();
@@ -65,7 +65,7 @@ class SoldeController extends Controller
 
     public static function LogSoldeConsultation($message)
     {
-        Log::channel('solde_consultation')
+        Log::channel(self::SOLDE_LOG)
             ->info($message);
     }
 }

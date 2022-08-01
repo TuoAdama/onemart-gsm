@@ -54,6 +54,10 @@ class SettingSeeder extends Seeder
         'authentificationAPI' => [
             'display' => "Code d'authenfication API",
             'value' => 12345,
+        ],
+        'number_of_failed' => [
+            'display' => "Nombre d'echec",
+            'value' => 0,
         ]
     ];
 

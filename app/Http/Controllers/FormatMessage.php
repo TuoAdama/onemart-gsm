@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OperationMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class FormatMessage extends Controller
 {
@@ -17,7 +18,7 @@ class FormatMessage extends Controller
         return array_combine(['solde', 'bonus'], [$solde, $bonus]);
     }
 
-    public static function responseFormat($message)
+    public static function responseFormat(string $message): array
     {
         if ($message == null || trim($message) == "") {
             return [
@@ -30,7 +31,7 @@ class FormatMessage extends Controller
         $response = array_map(function ($res) {
             return trim($res);
         }, $response);
-        if(str_contains($message, 'Request')){
+        if (str_contains($message, 'Request')) {
             $result['Request'] = explode('Request:', $response[0])[1];
         }
         if (str_contains($message, 'Response')) {
@@ -53,12 +54,12 @@ class FormatMessage extends Controller
         return $montant;
     }
 
-    public static function getReference($message)
+    public static function getReference(string $message): string
     {
         return substr($message, strpos($message, 'Ref') + strlen("Ref "));
     }
 
-    public static function transfertFormat($message)
+    public static function transfertFormat(string $message): array
     {
         $message = array_map(function ($msg) {
             return trim($msg);
@@ -74,7 +75,7 @@ class FormatMessage extends Controller
         // Numero
         $pos = strpos($m1, 'numero');
         $len2 = strlen('numero ');
-        $result['numero'] = substr($m1, $pos+$len2, 10);
+        $result['numero'] = substr($m1, $pos + $len2, 10);
 
         $msg2 = str_replace(['Fcfa', 'Votre solde actuel est '], '', $message[1]);
         $result['solde'] = str_replace(' ', '', $msg2);
@@ -82,7 +83,7 @@ class FormatMessage extends Controller
         return $result;
     }
 
-    public static function formatFlashMessage($message)
+    public static function formatFlashMessage(string $message)
     {
         $str = "Vous avez transfere MONTANT Fcfa au numero NUMERO";
         $msg = self::transfertFormat($message);
