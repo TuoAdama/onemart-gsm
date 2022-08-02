@@ -21,8 +21,7 @@ class SoldeController extends Controller
         ]);
         $soldeUrl = SettingController::sendSoldeURL();
         self::LogSoldeConsultation("Transmission du solde... URL=" . $soldeUrl);
-        $result = APIController::post($soldeUrl, $solde->toArray());
-        self::LogSoldeConsultation("Status code: " . $result->status());
+        $result = APIController::post($soldeUrl, $solde->toArray(), self::SOLDE_LOG);
         SettingController::updateCheckSoldeByUSSD(false);
     }
 

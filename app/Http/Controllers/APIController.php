@@ -24,11 +24,12 @@ class APIController extends Controller
         }
     }
 
-    public static function post($url, $body)
+    public static function post($url, $body, string $logChannel = 'single')
     {
-        info("POST: url=".$url."\n\n");
-
-        return Http::withHeaders(self::getHeader())->post($url, $body);
+        Log::channel($logChannel)->info("POST: url=".$url);
+        $response = Http::withHeaders(self::getHeader())->post($url, $body);
+        Log::channel($logChannel)->info("Status code:".$response->status());
+        return $response;
     }
 
     public static function sendByFileContent($url)
