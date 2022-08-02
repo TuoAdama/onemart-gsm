@@ -18,7 +18,7 @@ class FormatMessage extends Controller
         return array_combine(['solde', 'bonus'], [$solde, $bonus]);
     }
 
-    public static function responseFormat(string $message): array
+    public static function responseFormat(?string $message): array
     {
         if ($message == null || trim($message) == "") {
             return [

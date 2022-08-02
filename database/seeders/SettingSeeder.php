@@ -57,8 +57,8 @@ class SettingSeeder extends Seeder
             'display' => "Nombre d'echec",
             'value' => 0,
         ],
-        'check_solde' => [
-            'display' => 'Verifier solde',
+        'check_solde_by_ussd' => [
+            'display' => 'Verifier solde par ussd',
             'value' => 1,
         ]
     ];

@@ -80,14 +80,14 @@ class SettingController extends Controller
         return self::getSetting('number_of_failed');
     }
 
-    public static function checkSolde(): int
+    public static function checkSoldeByUSSD(): bool
     {
-        return self::getSetting('check_solde');
+        return self::getSetting('check_solde_by_ussd');
     }
 
-    public static function updateCheckSolde(bool $check): int
+    public static function updateCheckSoldeByUSSD(bool $check): bool
     {
-        Setting::where('key', 'check_solde')
+        Setting::where('key', 'check_solde_by_ussd')
             ->update([
                 'value' => $check ? 1 : 0
             ]);

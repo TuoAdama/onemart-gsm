@@ -12,15 +12,18 @@ class SoldeController extends Controller
 
     const SOLDE_LOG = "solde_consultation";
 
-    public static function soldeIsChange($solde):void
+    public static function soldeIsChange(int $solde):void
     {
-        self::LogSoldeConsultation("\n\nMise à jour du solde: [solde=" . $solde['solde'] . ", bonus=" . $solde['bonus'] . "]");
-        $solde = Solde::create($solde);
+        self::LogSoldeConsultation("\n\nMise à jour du solde: [solde=" . $solde ."]");
+        $solde = Solde::create([
+            'solde' => $solde,
+            'bonus' =>0
+        ]);
         $soldeUrl = SettingController::sendSoldeURL();
         self::LogSoldeConsultation("Transmission du solde... URL=" . $soldeUrl);
         $result = APIController::post($soldeUrl, $solde->toArray());
         self::LogSoldeConsultation("Status code: " . $result->status());
-        SettingController::updateCheckSolde(true);
+        SettingController::updateCheckSoldeByUSSD(false);
     }
 
     public static function getSolde(): ?int

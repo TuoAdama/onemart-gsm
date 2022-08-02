@@ -13,9 +13,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Psr\Log\LoggerInterface;
 
 class TransfertController extends Controller
 {
+
+    const TRANSFERT_STORE_LOG = "store_transfert";
+
     public static function getTransfertOnline(): array
     {
         self::LogStoreTransfert("\n\n\nRécuperation des transferts en ligne [Recuperation]");
@@ -23,16 +27,12 @@ class TransfertController extends Controller
         $setting = SettingController::appOnlineURL();
 
         if ($setting != null) {
-            self::LogStoreTransfert("URL=" . $setting);
-            $response = APIController::send($setting);
-            if ($response == null) {
+            $response = APIController::send($setting, self::TRANSFERT_STORE_LOG);
+            if ($response == null || $response->status() != 200) {
                 self::LogStoreTransfert("url inacessible");
                 return [];
             }
-            self::LogStoreTransfert("Status code: " . $response->status());
-            if ($response->status() == 200) {
-                return json_decode($response->body(), true);
-            }
+            return json_decode($response->body(), true);
         }
         return [];
     }
@@ -86,7 +86,7 @@ class TransfertController extends Controller
     {
         $transfert->etat_id = EtatController::echoue()->id;
         $transfert->save();
-        SettingController::updateCheckSolde(false);
+        SettingController::updateCheckSoldeByUSSD(true);
     }
     public static function success(Transfert $transfert, string $message = null): void
     {
@@ -119,7 +119,7 @@ class TransfertController extends Controller
 
     public static function LogStoreTransfert(string $message): void
     {
-        Log::channel('store_transfert')->info($message);
+        Log::channel(self::TRANSFERT_STORE_LOG)->info($message);
     }
 
     public function updateTransfert(int $transfert_id, int $etat_id): RedirectResponse
@@ -132,9 +132,13 @@ class TransfertController extends Controller
 
     public static function makeTransfertUSSD(Transfert $transfert): ?array
     {
-        $previousSolde = SoldeController::getSoldeFromDB();
-        if (SettingController::checkSolde()) {
+        $previousSolde = null;
+        if (SettingController::checkSoldeByUSSD()) {
+            info('Solde from USSD');
             $previousSolde = SoldeController::getSolde();
+        }else{
+            info('Solde from Database');
+            $previousSolde = SoldeController::getSoldeFromDB();
         }
         if ($previousSolde == null) {
             return null;
@@ -146,9 +150,9 @@ class TransfertController extends Controller
             info("Impossible de recupérer la syntaxe");
             return null;
         }
-        $syntaxeResponse = json_decode($response, true)['syntaxe'];
+        $syntaxeResponse = json_decode($response->body(), true)['syntaxe'];
         $syntaxe = self::formatSyntaxe($transfert, $syntaxeResponse);
-        $USSDReponse = self::transfertOperation($transfert, $syntaxe);
+        $USSDReponse = self::transfertOperation($syntaxe);
         $message = null;
         $currentSolde = null;
         if (count($USSDReponse)) {
