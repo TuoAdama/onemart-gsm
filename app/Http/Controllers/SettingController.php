@@ -103,4 +103,11 @@ class SettingController extends Controller
     {
         return self::getNumOfFailed() == self::nombreTentative();
     }
+
+    public static function sendNotification(Request $request)
+    {
+        return response()->json([
+            'notify' => self::restartSysteme(),
+        ]);
+    }
 }

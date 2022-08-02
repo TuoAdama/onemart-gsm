@@ -32,9 +32,7 @@
 		@php
 			$restart = App\Http\Controllers\SettingController::restartSysteme();
 		@endphp
-		@if ($restart)
-			<div class="alert alert-danger m-3">Veuillez redemarrer le système</div>
-		@endif
+		<div class="alert alert-danger m-3 {{$restart ? '':'d-none'}}" id="restart-alert">Veuillez redemarrer le système</div>
 		@yield('content')
 	</div>
 	<!--//app-wrapper-->
@@ -52,6 +50,7 @@
 		  });
 	  } );
 	</script>
+	<script src="{{asset('js/index.js')}}"></script>
 
 </body>
 
