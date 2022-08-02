@@ -4,7 +4,7 @@ $(function(){
 
     setInterval(function(){
         notify();
-    }, 5 * 60 * 1000);
+    }, 60000);
 
     function notify(){
         fetch('/notifcation')
