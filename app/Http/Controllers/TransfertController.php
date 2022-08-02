@@ -86,6 +86,7 @@ class TransfertController extends Controller
     {
         $transfert->etat_id = EtatController::echoue()->id;
         $transfert->save();
+        SettingController::updateCheckSolde(false);
     }
     public static function success(Transfert $transfert, string $message = null): void
     {

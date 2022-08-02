@@ -20,6 +20,7 @@ class SoldeController extends Controller
         self::LogSoldeConsultation("Transmission du solde... URL=" . $soldeUrl);
         $result = APIController::post($soldeUrl, $solde->toArray());
         self::LogSoldeConsultation("Status code: " . $result->status());
+        SettingController::updateCheckSolde(true);
     }
 
     public static function getSolde(): ?int
