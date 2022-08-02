@@ -59,24 +59,26 @@ class TransfertController extends Controller
 
     public static function make(): void
     {
-        info("\n\n----------------------------------------------------------------");
-        $etat_ids = Etat::where('libelle', 'EN COURS')
-            ->get()
-            ->pluck('id')
-            ->toArray();
-        $transfert = Transfert::whereIn('etat_id', $etat_ids)
-            ->orderBy('updated_at')
-            ->first();
-        if ($transfert != null) {
-            $result = self::makeTransfertUSSD($transfert);
-            if ($result) {
-                self::success($transfert, $result['message']);
-                SoldeController::soldeIsChange($result['solde']);
-            }else{
-                self::failed($transfert);
+        if (!SettingController::restartSysteme()) {
+            info("\n\n----------------------------------------------------------------");
+            $etat_ids = Etat::where('libelle', 'EN COURS')
+                ->get()
+                ->pluck('id')
+                ->toArray();
+            $transfert = Transfert::whereIn('etat_id', $etat_ids)
+                ->orderBy('updated_at')
+                ->first();
+            if ($transfert != null) {
+                $result = self::makeTransfertUSSD($transfert);
+                if ($result) {
+                    self::success($transfert, $result['message']);
+                    SoldeController::soldeIsChange($result['solde']);
+                } else {
+                    self::failed($transfert);
+                }
+            } else {
+                info("Aucun transfert en cours");
             }
-        } else {
-            info("Aucun transfert en cours");
         }
     }
 
@@ -129,11 +131,14 @@ class TransfertController extends Controller
 
     public static function makeTransfertUSSD(Transfert $transfert): ?array
     {
-        $previousSolde = SoldeController::getSolde();
-        if($previousSolde == null){
+        $previousSolde = SoldeController::getSoldeFromDB();
+        if (SettingController::checkSolde()) {
+            $previousSolde = SoldeController::getSolde();
+        }
+        if ($previousSolde == null) {
             return null;
         }
-        info("Previous solde: ".$previousSolde);
+        info("Previous solde: " . $previousSolde);
         info("Transfert: ", $transfert->toArray());
         $response = APIController::send(SettingController::APItransfertSyntaxeURL());
         if ($response == null || $response->status() != 200) {

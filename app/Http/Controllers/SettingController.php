@@ -79,4 +79,28 @@ class SettingController extends Controller
     {
         return self::getSetting('number_of_failed');
     }
+
+    public static function checkSolde(): int
+    {
+        return self::getSetting('check_solde');
+    }
+
+    public static function updateCheckSolde(bool $check): int
+    {
+        Setting::where('key', 'check_solde')
+            ->update([
+                'value' => $check ? 1 : 0
+            ]);
+        return $check;
+    }
+
+    public static function nombreTentative(): int
+    {
+        return self::getSetting('max_failed');
+    }
+
+    public static function restartSysteme():bool
+    {
+        return self::getNumOfFailed() == self::nombreTentative();
+    }
 }

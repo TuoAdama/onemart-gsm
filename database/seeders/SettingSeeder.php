@@ -8,13 +8,7 @@ use Illuminate\Database\Seeder;
 
 class SettingSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-
-    public $settings = [
+    public array $settings = [
         'host' => [
             'display' => "APPLI Distante",
             'value' => 'http://localhost:8000',
@@ -55,12 +49,24 @@ class SettingSeeder extends Seeder
             'display' => "Code d'authenfication API",
             'value' => 12345,
         ],
+        'max_failed' => [
+            'display' => 'Nombre de tentative',
+            'value' => 5,
+        ],
         'number_of_failed' => [
             'display' => "Nombre d'echec",
             'value' => 0,
+        ],
+        'check_solde' => [
+            'display' => 'Verifier solde',
+            'value' => 1,
         ]
     ];
-
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
         foreach ($this->settings as $k => $v) {
@@ -77,4 +83,5 @@ class SettingSeeder extends Seeder
             }
         }
     }
+
 }

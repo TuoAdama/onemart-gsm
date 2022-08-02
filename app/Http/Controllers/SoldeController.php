@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 class SoldeController extends Controller
 {
 
-    const SOLDE_SUCCESS_MESSAGE = "Votre Solde EVD est";
     const SOLDE_LOG = "solde_consultation";
 
     public static function soldeIsChange($solde):void
@@ -46,26 +45,18 @@ class SoldeController extends Controller
         return null;
     }
 
-    public static function soldeActuel()
-    {
-        $solde = self::getSolde();
-        if ($solde != null) {
-            self::LogSoldeConsultation($solde);
-            $s = $solde['solde'];
-            info("Solde actuel= " . $s);
-            $dernierSolde = Solde::orderBy('id', 'desc')->first();
-            if ($dernierSolde != null) {
-                if ($dernierSolde->solde != $s) {
-                    self::LogSoldeConsultation("Ancien solde: [solde=" . $dernierSolde->solde . ", bonus=" . $dernierSolde->bonus . "]");
-                    self::soldeIsChange($solde);
-                }
-            }
-        }
-    }
-
     public static function LogSoldeConsultation($message)
     {
         Log::channel(self::SOLDE_LOG)
             ->info($message);
+    }
+
+    public static function getSoldeFromDB(): ?int
+    {
+        $solde = Solde::orderBy('id', 'desc')->first();
+        if($solde){
+            return $solde->solde;
+        }
+        return null;
     }
 }

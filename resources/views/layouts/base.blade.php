@@ -29,6 +29,12 @@
 	<!--//app-header-->
 
 	<div class="app-wrapper">
+		@php
+			$restart = App\Http\Controllers\SettingController::restartSysteme();
+		@endphp
+		@if ($restart)
+			<div class="alert alert-danger m-3">Veuillez redemarrer le système</div>
+		@endif
 		@yield('content')
 	</div>
 	<!--//app-wrapper-->

@@ -40,5 +40,5 @@ Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 
 Route::get('/test', function(){
-    dd(null == 2);
+    
 });
