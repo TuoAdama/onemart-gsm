@@ -60,6 +60,10 @@ class SettingSeeder extends Seeder
         'check_solde_by_ussd' => [
             'display' => 'Verifier solde par ussd',
             'value' => 1,
+        ],
+        'notification_url' => [
+            'display' => 'URL de notification',
+            'value' => '/api/notification',
         ]
     ];
     /**

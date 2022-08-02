@@ -124,6 +124,10 @@ return [
         'solde_consultation' => [
             'driver' => 'single',
             'path' => storage_path('logs/solde_consultation.log'),
+        ],
+        'notification' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/notification.log'),
         ]
     ],
 

@@ -106,8 +106,9 @@ class SettingController extends Controller
 
     public static function sendNotification(Request $request)
     {
-        return response()->json([
-            'notify' => self::restartSysteme(),
-        ]);
+        $notify = ['notify' => self::restartSysteme()];
+        $notify_url = self::url(self::getSetting('notification_url'));
+        APIController::post($notify_url, $notify, 'notification');
+        return response()->json($notify);
     }
 }

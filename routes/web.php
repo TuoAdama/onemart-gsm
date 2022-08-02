@@ -14,6 +14,7 @@ use App\Models\Solde;
 use App\Models\Transfert;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Http\Request;
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -40,3 +41,7 @@ Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 
 Route::get('/notifcation', [SettingController::class, 'sendNotification']);
+
+Route::get('/test', function(Request $request){
+    SettingController::sendNotification($request);
+});
