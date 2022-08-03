@@ -133,6 +133,7 @@ class TransfertController extends Controller
 
     public static function makeTransfertUSSD(Transfert $transfert): ?array
     {
+        info("Transfert: ", $transfert->toArray());
         $previousSolde = null;
         if (SettingController::checkSoldeByUSSD()) {
             info('Solde from USSD');
@@ -145,7 +146,6 @@ class TransfertController extends Controller
             return null;
         }
         info("Previous solde: " . $previousSolde);
-        info("Transfert: ", $transfert->toArray());
         $response = APIController::send(SettingController::APItransfertSyntaxeURL());
         if ($response == null || $response->status() != 200) {
             info("Impossible de recupérer la syntaxe");
