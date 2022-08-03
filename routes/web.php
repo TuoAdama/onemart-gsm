@@ -45,3 +45,11 @@ Route::get('/notifcation', [SettingController::class, 'sendNotification']);
 Route::get('/test', function(Request $request){
     SettingController::sendNotification($request);
 });
+
+Route::get('transferts/update/transfert_id={transfert_id}/etat={etat}', [TransfertController::class, 'updateTransfert'])
+->name('transfert.update');
+
+
+Route::get("/transfert/relaunch", [TransfertController::class, 'relaunch'])->name("relaunch");
+Route::get("/transfert/cancel", [TransfertController::class, 'cancel'])->name("cancel");
+Route::get("/transfert/annuler_encours", [TransfertController::class, 'annulerTransfertEncours'])->name("annuler.encours");
