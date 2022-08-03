@@ -182,4 +182,30 @@ class TransfertController extends Controller
         }
         return [];
     }
+
+    public function relaunch()
+    {
+        Transfert::where('etat_id', Etat::ECHOUE)
+        ->update(['etat_id' => Etat::EN_COURS]);
+        info("Transferts echoués ont été relancés");
+        return redirect()->back()->with("relaunch", 'Transferts relancés.');
+    }
+    
+    public function cancel()
+    {
+        Transfert::where('etat_id', Etat::ECHOUE)
+        ->update(['etat_id' => Etat::ANNULER]);
+        
+        info("Transferts echoués ont été annulés");
+        return redirect()->back()->with("cancel", 'Transferts annulés.');
+    }
+    
+    public function annulerTransfertEncours()
+    {
+        Transfert::where('etat_id', Etat::EN_COURS)
+        ->update(['etat_id' => Etat::ANNULER]);
+        
+        info("Transferts en cours ont été annulés");
+        return redirect()->back()->with("cancel", 'Transferts annulés.');
+    }
 }
