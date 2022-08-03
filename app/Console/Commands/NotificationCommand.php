@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\NotificationController;
 use Illuminate\Console\Command;
 
 class NotificationCommand extends Command
@@ -27,6 +28,7 @@ class NotificationCommand extends Command
      */
     public function handle()
     {
+        NotificationController::notify();
         return 0;
     }
 }

@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         ->runInBackground();
 
         $schedule->command('notification:notify')
-                ->everyFiveMinutes()
+                ->everyMinute()
                 ->runInBackground();
     }
 
