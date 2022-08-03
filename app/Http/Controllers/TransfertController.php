@@ -84,6 +84,7 @@ class TransfertController extends Controller
 
     public static function failed(Transfert $transfert): void
     {
+        info("Transfert échoué");
         $transfert->etat_id = EtatController::echoue()->id;
         $transfert->save();
         SettingController::updateCheckSoldeByUSSD(true);
@@ -107,6 +108,7 @@ class TransfertController extends Controller
         $transfert->transfert_id = $transfert->id;
         $transfert->reference = $reference;
         $transfert->sms = $message;
+        info("Transfert exectué avec succès");
         info("Envoie du transfert en ligne...");
         APIController::post(SettingController::smsStorage(), $transfert->toArray());
     }
