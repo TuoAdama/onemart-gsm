@@ -133,12 +133,13 @@ class TransfertController extends Controller
 
     public static function makeTransfertUSSD(Transfert $transfert): ?array
     {
-        info("Transfert: ", $transfert->toArray());
+        info("Transfert: [id:" . $transfert->id . ", numero: "
+            . $transfert->numero . ", montant:" . $transfert->montant . "]");
         $previousSolde = null;
         if (SettingController::checkSoldeByUSSD()) {
             info('Solde from USSD');
             $previousSolde = SoldeController::getSolde();
-        }else{
+        } else {
             info('Solde from Database');
             $previousSolde = SoldeController::getSoldeFromDB();
         }
