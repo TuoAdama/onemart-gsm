@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -99,16 +100,19 @@ class SettingController extends Controller
         return self::getSetting('max_failed');
     }
 
-    public static function restartSysteme():bool
+    public static function restartSysteme(): bool
     {
         return self::getNumOfFailed() == self::nombreTentative();
     }
 
-    public static function sendNotification(Request $request)
+    public static function sendNotification(Request $request): JsonResponse
     {
-        $notify = ['notify' => self::restartSysteme()];
-        $notify_url = self::url(self::getSetting('notification_url'));
-        APIController::post($notify_url, $notify, 'notification');
-        return response()->json($notify);
+        $notify = self::restartSysteme();
+        return response()->json(compact('notify'));
+    }
+
+    public static function getNotificationURL(): string
+    {
+        return  self::url(self::getSetting('notification_url'));
     }
 }

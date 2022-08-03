@@ -27,6 +27,10 @@ class Kernel extends ConsoleKernel
         ->everyMinute()
         ->withoutOverlapping()
         ->runInBackground();
+
+        $schedule->command('notification:notify')
+                ->everyFiveMinutes()
+                ->runInBackground();
     }
 
     /**
