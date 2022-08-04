@@ -22,7 +22,9 @@ class HomeController extends Controller
 
     public function transferts()
     {
-        $transferts = Transfert::orderBy('updated_at', 'desc')->get();
+        $transferts = Transfert::orderBy('updated_at', 'desc')
+        ->whereDate('created_at', date('Y-m-d'))
+        ->get();
 
         return view('pages.transferts', [
             'setting' => Setting::where('key', 'number_of_failed')->first(),
