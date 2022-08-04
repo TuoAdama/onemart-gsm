@@ -38,6 +38,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::get('/configuration', [HomeController::class, 'configuration'])->name('configuration');
 Route::get('/transferts', [HomeController::class, 'transferts'])->name('transferts');
+Route::get('/transferts/all', [HomeController::class, 'allTransferts'])->name('transferts.all');
 Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 
@@ -45,7 +46,6 @@ Route::get('/notifcation', [SettingController::class, 'sendNotification']);
 
 Route::get('transferts/update/transfert_id={transfert_id}/etat={etat}', [TransfertController::class, 'updateTransfert'])
 ->name('transfert.update');
-
 
 Route::get("/transfert/relaunch", [TransfertController::class, 'relaunch'])->name("relaunch");
 Route::get("/transfert/cancel", [TransfertController::class, 'cancel'])->name("cancel");
