@@ -185,16 +185,17 @@ class TransfertController extends Controller
 
     public function relaunch()
     {
-        Transfert::where('etat_id', Etat::ECHOUE)
-        ->update(['etat_id' => Etat::EN_COURS]);
+        Transfert::where('etat_id', EtatController::echoue()->id)
+        ->whereDate('created_at', date('Y-m-d'))
+        ->update(['etat_id' => EtatController::enCours()->id]);
         info("Transferts echoués ont été relancés");
         return redirect()->back()->with("relaunch", 'Transferts relancés.');
     }
     
     public function cancel()
     {
-        Transfert::where('etat_id', Etat::ECHOUE)
-        ->update(['etat_id' => Etat::ANNULER]);
+        Transfert::where('etat_id', EtatController::echoue()->id)
+        ->update(['etat_id' => EtatController::annule()->id]);
         
         info("Transferts echoués ont été annulés");
         return redirect()->back()->with("cancel", 'Transferts annulés.');
@@ -202,8 +203,8 @@ class TransfertController extends Controller
     
     public function annulerTransfertEncours()
     {
-        Transfert::where('etat_id', Etat::EN_COURS)
-        ->update(['etat_id' => Etat::ANNULER]);
+        Transfert::where('etat_id', EtatController::enCours()->id)
+        ->update(['etat_id' => EtatController::annule()->id]);
         
         info("Transferts en cours ont été annulés");
         return redirect()->back()->with("cancel", 'Transferts annulés.');

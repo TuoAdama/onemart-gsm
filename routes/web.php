@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\EtatController;
 use App\Http\Controllers\FormatMessage;
 use App\Http\Controllers\GSMController;
 use App\Http\Controllers\HomeController;
@@ -41,10 +42,6 @@ Route::get('/soldes', [HomeController::class, 'soldes'])->name('soldes');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('setting.update');
 
 Route::get('/notifcation', [SettingController::class, 'sendNotification']);
-
-Route::get('/test', function(Request $request){
-    SettingController::sendNotification($request);
-});
 
 Route::get('transferts/update/transfert_id={transfert_id}/etat={etat}', [TransfertController::class, 'updateTransfert'])
 ->name('transfert.update');
