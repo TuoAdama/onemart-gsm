@@ -60,8 +60,12 @@
                         </thead>
                         <tbody>
                             @foreach ($transferts as $transfert)
+                            @php
+                                $created_at = $transfert->getRawOriginal('created_at');
+                                $created_at = Carbon\Carbon::parse($created_at);
+                            @endphp
                                 <tr>
-                                    <td>{{ $transfert->updated_at->locale('fr')->isoFormat('lll') }}</td>
+                                    <td>{{ $created_at->locale('fr')->isoFormat('lll') }}</td>
                                     <td>{{ $transfert->id }}</td>
                                     <td>{{ $transfert->numero }}</td>
                                     <td>{{ number_format($transfert->montant, 0, '.', ' ') }} FCFA</td>
