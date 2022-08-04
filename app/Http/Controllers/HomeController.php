@@ -25,6 +25,7 @@ class HomeController extends Controller
         $transferts = Transfert::orderBy('updated_at', 'desc')->get();
 
         return view('pages.transferts', [
+            'setting' => Setting::where('key', 'number_of_failed')->first(),
             'transferts' => $transferts,
             'colors' => ['text-warning', 'text-success', 'text-danger', 'text-primary', 'text-danger']
         ]);
