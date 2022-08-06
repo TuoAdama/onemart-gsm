@@ -15,12 +15,12 @@ class EtatSeeder extends Seeder
      */
     public function run()
     {
-        $etats = ['EN COURS', 'EXECUTE', 'ECHOUE', 'SUSPENDU'];
+        $etats = ['EN COURS', 'EXECUTE', 'ECHOUE', 'SUSPENDU', 'EN ATTENTE'];
         foreach ($etats as $etat) {
             $et = Etat::where('libelle',$etat)->first();
             if($et == null ){
                 Etat::create([
-                    'libelle' => $etat
+                    'libelle' => $etat,
                 ]);
             }
         }
