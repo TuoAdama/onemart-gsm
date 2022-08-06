@@ -59,7 +59,7 @@ class HomeController extends Controller
                 'text-danger',
                 'text-primary',
                 'text-danger',
-                'bg-secondary'
+                'text-secondary'
         ];
     }
 
