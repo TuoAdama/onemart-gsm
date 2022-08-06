@@ -25,7 +25,7 @@
                     @endphp
                     <span>{{ $etat->libelle }}</span>
                     @isset($resetTransfert)
-                        @if ($etat->id == 3)
+                        @if ($etat->libelle == App\Models\Etat::EN_ATTENTE)
                             <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 1]) }}"
                                 class="ms-3 btn btn-primary">R</a>
                             <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 5]) }}"

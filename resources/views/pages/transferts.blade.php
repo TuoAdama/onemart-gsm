@@ -35,7 +35,7 @@
             <div class="row mt-5">
                 <div class="col-md-4 mb-4">
                     <a class="btn btn-success" data-toggle="modal" data-target="#encours">Annuler tous les transferts en
-                        cours</a>
+                        attente</a>
                 </div>
                 <div class="col-md-4 mb-4">
                     <a class="btn btn-warning" data-toggle="modal" data-target="#relancer">Relancer tous les transferts

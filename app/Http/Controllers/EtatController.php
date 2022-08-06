@@ -31,4 +31,9 @@ class EtatController extends Controller
     {
         return self::getEtatByLibelle('EXECUTE');
     }
+
+    public static function attente(): Etat
+    {
+        return self::getEtatByLibelle("EN ATTENTE");
+    }
 }

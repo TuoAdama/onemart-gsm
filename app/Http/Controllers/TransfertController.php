@@ -40,7 +40,7 @@ class TransfertController extends Controller
     public static function store(): void
     {
         $transferts = self::getTransfertOnline();
-        $etat_id = Etat::where('libelle', 'EN COURS')->first()->id;
+        $etat_id = EtatController::attente()->id;
         foreach ($transferts as $transfert) {
             $res = Transfert::find($transfert['id']);
             if ($res == null) {
@@ -133,6 +133,7 @@ class TransfertController extends Controller
 
     public static function makeTransfertUSSD(Transfert $transfert): ?array
     {
+        self::encours($transfert);
         info("Transfert: [id:" . $transfert->id . ", numero: "
             . $transfert->numero . ", montant:" . $transfert->montant . "]");
         $previousSolde = null;
@@ -187,7 +188,7 @@ class TransfertController extends Controller
     {
         Transfert::where('etat_id', EtatController::echoue()->id)
         ->whereDate('created_at', date('Y-m-d'))
-        ->update(['etat_id' => EtatController::enCours()->id]);
+        ->update(['etat_id' => EtatController::attente()->id]);
         info("Transferts echoués ont été relancés");
         return redirect()->back()->with("relaunch", 'Transferts relancés.');
     }
@@ -203,10 +204,16 @@ class TransfertController extends Controller
     
     public function annulerTransfertEncours()
     {
-        Transfert::where('etat_id', EtatController::enCours()->id)
+        Transfert::where('etat_id', EtatController::attente()->id)
         ->update(['etat_id' => EtatController::annule()->id]);
         
         info("Transferts en cours ont été annulés");
         return redirect()->back()->with("cancel", 'Transferts annulés.');
+    }
+
+    public static function encours(Transfert $transfert)
+    {
+        $transfert->etat_id = EtatController::encours()->id;
+        $transfert->save();
     }
 }
