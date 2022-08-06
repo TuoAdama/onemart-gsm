@@ -54,7 +54,13 @@ class HomeController extends Controller
 
     public function getColors()
     {
-        return ['text-warning', 'text-success', 'text-danger', 'text-primary', 'text-danger'];
+        return ['text-warning',
+                'text-success',
+                'text-danger',
+                'text-primary',
+                'text-danger',
+                'bg-secondary'
+        ];
     }
 
     public function soldes()

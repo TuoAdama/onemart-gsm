@@ -61,7 +61,7 @@ class TransfertController extends Controller
     {
         if (!SettingController::restartSysteme()) {
             info("\n\n----------------------------------------------------------------");
-            $etat_ids = Etat::where('libelle', 'EN COURS')
+            $etat_ids = Etat::where('libelle', Etat::EN_ATTENTE)
                 ->get()
                 ->pluck('id')
                 ->toArray();

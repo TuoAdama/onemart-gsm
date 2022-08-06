@@ -19,13 +19,13 @@
                 <td>{{ $transfert->id }}</td>
                 <td>{{ $transfert->numero }}</td>
                 <td>{{ number_format($transfert->montant, 0, '.', ' ') }} FCFA</td>
-                <td class="text-bold {{ $colors[$transfert->etat_id - 1] }}">
+                <td class="text-bold {{ $colors[$transfert->etat_id - 1] ?? 'bg-dark' }}">
                     @php
                         $etat = $transfert->etat;
                     @endphp
-                    <span>{{ $etat->libelle }}</span>
+                    <span class="bg-secondary">{{ $etat->libelle }}</span>
                     @isset($resetTransfert)
-                        @if ($etat->libelle == App\Models\Etat::EN_ATTENTE)
+                        @if ($etat->libelle == App\Models\Etat::ECHOUE)
                             <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 1]) }}"
                                 class="ms-3 btn btn-primary">R</a>
                             <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 5]) }}"
