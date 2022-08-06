@@ -19,7 +19,7 @@
                 <td>{{ $transfert->id }}</td>
                 <td>{{ $transfert->numero }}</td>
                 <td>{{ number_format($transfert->montant, 0, '.', ' ') }} FCFA</td>
-                <td class="text-bold {{ $colors[$transfert->etat_id - 1] ?? 'bg-dark' }}">
+                <td class="text-bold {{ $colors[$transfert->etat_id - 1] }}">
                     @php
                         $etat = $transfert->etat;
                     @endphp
