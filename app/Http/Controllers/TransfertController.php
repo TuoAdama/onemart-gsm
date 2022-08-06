@@ -123,10 +123,10 @@ class TransfertController extends Controller
         Log::channel(self::TRANSFERT_STORE_LOG)->info($message);
     }
 
-    public function updateTransfert(int $transfert_id, int $etat_id): RedirectResponse
+    public function updateTransfert(int $transfert_id, string $libelle): RedirectResponse
     {
         $trans = Transfert::find($transfert_id);
-        $trans->etat_id = $etat_id;
+        $trans->etat_id = Etat::where('libelle', $libelle)->first()->id;
         $trans->save();
         return redirect()->back();
     }

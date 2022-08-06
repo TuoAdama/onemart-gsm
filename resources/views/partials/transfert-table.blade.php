@@ -26,9 +26,9 @@
                     <span>{{ $etat->libelle }}</span>
                     @isset($resetTransfert)
                         @if ($etat->libelle == App\Models\Etat::ECHOUE)
-                            <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 1]) }}"
+                            <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => App\Models\Etat::EN_ATTENTE]) }}"
                                 class="ms-3 btn btn-primary">R</a>
-                            <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 5]) }}"
+                            <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => App\Models\Etat::ANNULE]) }}"
                                 class="ms-3 btn btn-danger">
                                 <i class="fa-solid fa-arrow-rotate-right">A</i>
                             </a>
