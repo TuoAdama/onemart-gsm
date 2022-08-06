@@ -23,7 +23,7 @@
                     @php
                         $etat = $transfert->etat;
                     @endphp
-                    <span class="bg-secondary">{{ $etat->libelle }}</span>
+                    <span>{{ $etat->libelle }}</span>
                     @isset($resetTransfert)
                         @if ($etat->libelle == App\Models\Etat::ECHOUE)
                             <a href="{{ route('transfert.update', ['transfert_id' => $transfert->id, 'etat' => 1]) }}"
